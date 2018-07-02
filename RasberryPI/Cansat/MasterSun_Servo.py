@@ -141,7 +141,7 @@ def ScanStepMotor():
 #            #print "Your skin will start to burn and tanning within an hour"
 #
 #
-#       print("This case is for Asian people only")
+#       print("Ps. This case is for Mediterranean, Asian and Latino people only")
 ###
 
 	returnValue = []
