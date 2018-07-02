@@ -123,18 +123,25 @@ def ScanStepMotor():
           else :
               print "Warning:" + "Take all Percautions; Extreme UV"
 
-###
+###  Check if it correct
 #        #uvIrradiance
 #        #uvIrradiance = uvIndex * 0.025 * 10
 #        #print "Uv Irradiance: " + uvIrradiance
-#        if uvIrradiance <= 2.67 > 1.33 :
-#            print "Your skin will start to burnning and tanning in 15 minutes"
+#
+#
+#        if uvIrradiance > 2.67 :
+#           print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
+#        elif uvIrradiance <= 2.67 > 1.33 :
+#            print "Your skin will start to burn and tanning within 15 minutes"
 #        elif uvIrradiance <= 1.33 > 0.89 :
-#            print "Your skin will start to burnning and tanning in 30 minutes"
+#            print "Your skin will start to burn and tanning within half an hour"
 #        elif uvIrradiance <= 0.89 > 0.67 :
-#            print "Your skin will start to burnning and tanning in 45 minutes"
+#            print "Your skin will start to burn and tanning within 45 minutes"
 #        else uvIrradiance <= 0.67 :
-#            #print "Your skin will start to burnning and tanning in 60 minutes"
+#            #print "Your skin will start to burn and tanning within an hour"
+#
+#
+#       print("This case is for Asian people only")
 ###
 
 	returnValue = []
