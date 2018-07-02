@@ -123,6 +123,20 @@ def ScanStepMotor():
           else :
               print "Warning:" + "Take all Percautions; Extreme UV"
 
+"""
+        #uvIrradiance
+        #uvIrradiance = uvIndex * 0.025 * 10
+        #print "Uv Irradiance: " + uvIrradiance
+        if uvIrradiance <= 2.67 > 1.33 :
+            print "Your skin will start to burnning and tanning in 15 minutes"
+        elif uvIrradiance <= 1.33 > 0.89 :
+            print "Your skin will start to burnning and tanning in 30 minutes"
+        elif uvIrradiance <= 0.89 > 0.67 :
+            print "Your skin will start to burnning and tanning in 45 minutes"
+        else uvIrradiance <= 0.67 :
+            print "Your skin will start to burnning and tanning in 60 minutes"
+"""
+
 	returnValue = []
 	returnValue.append(vis)
 	returnValue.append(IR)
