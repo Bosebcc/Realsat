@@ -124,9 +124,10 @@ def ScanStepMotor():
               print "Warning:" + "Take all Percautions; Extreme UV"
 
 ###  Check if it correct
-#        #uvIrradiance
-#        #uvIrradiance = uvIndex * 0.025 * 10
-#        #print "Uv Irradiance: " + uvIrradiance
+#        uvIrradiance
+#        #(dont use this line)uvIrradiance = uvIndex * 0.025 * 60(seconds) * 10 (J/m^2 to mJ/cm^2)
+#        uvIrradiance = uvIndex * 0.025 * 60 * 10
+#        print "Uv Irradiance: " + uvIrradiance
 #
 #
 #        if uvIrradiance > 2.67 :
