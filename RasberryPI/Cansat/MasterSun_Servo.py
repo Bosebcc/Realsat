@@ -128,7 +128,7 @@ def ScanStepMotor():
 #        #(dont use this line)uvIrradiance = uvIndex * 0.025 * 60(seconds) * 10 (J/m^2 to mJ/cm^2)
 #        uvIrradiance = uvIndex * 0.025 * 60 * 10
 #        print "Uv Irradiance: " + uvIrradiance
-#
+#       #so we will get UV Dose per minute by multiplying 60 seconds
 #
 #        if uvIrradiance > 2.67 :
 #           print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
