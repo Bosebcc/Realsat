@@ -214,7 +214,7 @@ if __name__ == "__main__":
         degreeOfTurn = numOfTurn*15
         m.move_to(degreeOfTurn)
         for x in range(21):
-            if x == 0:
+            if x <= 2:
                 pulse = (x * 100)+500
                 time.sleep(0.5)
                 vis = sensor.readVisible()
