@@ -22,10 +22,10 @@ class Motor(object):
                 3: half step drive (default)
 
         """
-        self.P1 = pins[0]
-        self.P2 = pins[1]
-        self.P3 = pins[2]
-        self.P4 = pins[3]
+        self.P1 = pins[6]
+        self.P2 = pins[13]
+        self.P3 = pins[19]
+        self.P4 = pins[26]
         self.mode = mode
         self.deg_per_step = 5.625 / 64  # for half-step drive (mode 3)
         self.steps_per_rev = int(360 / self.deg_per_step)  # 4096
