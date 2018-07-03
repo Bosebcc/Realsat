@@ -214,23 +214,40 @@ if __name__ == "__main__":
         degreeOfTurn = numOfTurn*15
         m.move_to(degreeOfTurn)
         for x in range(21):
-            pulse = (x * 100)+500   #turn  servo 100 pulse from 500-2500
-            pi.set_servo_pulsewidth(gpioServo, pulse)
-            print(servoPos)
-            time.sleep(0.05)
-            vis = sensor.readVisible()
-            IR = sensor.readIR()
-            UV = sensor.readUV()
-            uvIndex = UV / 100.0
-            if highVisible < uvIndex:
-                servoPos = x
-                stepPos = degreeOfTurn
-                highVisible = uvIndex
-                pass
-            print('SunLight Sensor read at time: %s' % datetime.now())
-            print '		Vis:             ' + str(vis)
-            print '		IR:              ' + str(IR)
-            print '		UV Index:        ' + str(uvIndex)
+            if x <= 2:
+                pulse = (x * 100)+500
+                time.sleep(0.5)
+                vis = sensor.readVisible()
+                IR = sensor.readIR()
+                UV = sensor.readUV()
+                uvIndex = UV / 100.0
+                if highVisible < uvIndex:
+                    servoPos = x
+                    stepPos = degreeOfTurn
+                    highVisible = uvIndex
+                    pass
+                print('SunLight Sensor read at time: %s' % datetime.now())
+                print '		Vis:             ' + str(vis)
+                print '		IR:              ' + str(IR)
+                print '		UV Index:        ' + str(uvIndex)
+            else:
+                pulse = (x * 100)+500   #turn  servo 100 pulse from 500-2500
+                pi.set_servo_pulsewidth(gpioServo, pulse)
+                print(servoPos)
+                time.sleep(0.025)
+                vis = sensor.readVisible()
+                IR = sensor.readIR()
+                UV = sensor.readUV()
+                uvIndex = UV / 100.0
+                if highVisible < uvIndex:
+                    servoPos = x
+                    stepPos = degreeOfTurn
+                    highVisible = uvIndex
+                    pass
+                print('SunLight Sensor read at time: %s' % datetime.now())
+                print '		Vis:             ' + str(vis)
+                print '		IR:              ' + str(IR)
+                print '		UV Index:        ' + str(uvIndex)
     servoPos = (servoPos * 100)+500
     pi.set_servo_pulsewidth(gpioServo, servoPos)
     print(servoPos)
