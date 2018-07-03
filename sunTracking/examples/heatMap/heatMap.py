@@ -9,4 +9,4 @@ plotly.offline.iplot({
                           [20, 1, 60],
                           [30, 60, 1]])],
     "layout": go.Layout(title="basic-heatmap")
-)}
+})
