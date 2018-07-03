@@ -7,4 +7,4 @@ trace = go.Heatmap(z=[[1, 20, 30],
 data=[trace]
 
 plotly.offline.init_notebook_mode(connected=True)
-plotly.offline.iplot(data, filename='basic-heatmap', include_plotlyjs = false)
+plotly.offline.iplot(data, filename='basic-heatmap', include_plotlyjs = False)
