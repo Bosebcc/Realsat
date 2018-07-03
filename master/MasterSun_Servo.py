@@ -214,10 +214,10 @@ if __name__ == "__main__":
         degreeOfTurn = numOfTurn*15
         m.move_to(degreeOfTurn)
         for x in range(21):
-            if x == 0:
+            if x <= 1:
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.4)
+                time.sleep(0.2)
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
                 UV = sensor.readUV()
