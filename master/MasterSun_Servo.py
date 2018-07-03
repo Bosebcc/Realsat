@@ -223,7 +223,7 @@ if __name__ == "__main__":
             uvIndex = UV / 100.0
             if highVisible < uvIndex:
                 servoPos = x
-                stepPos =
+                stepPos = degreeOfTurn
                 highVisible = uvIndex
                 pass
             print('SunLight Sensor read at time: %s' % datetime.now())
@@ -233,7 +233,7 @@ if __name__ == "__main__":
     servoPos = (servoPos * 100)+500
     pi.set_servo_pulsewidth(gpioServo, servoPos)
     print(servoPos)
-    m.move_to(degreeOfTurn)
+    m.move_to(stepPos)
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
     pi.stop()
