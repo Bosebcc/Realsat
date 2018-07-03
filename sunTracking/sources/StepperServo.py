@@ -2,8 +2,7 @@ import time
 import sys
 sys.path.insert(0, '//Coding/Realsat/sunTracking/sources/Modules')
 
-import file
-
+import SDL_Pi_SI1145
 
 sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
 from datetime import datetime
