@@ -43,7 +43,6 @@ for i in range(512):
       pulse = (x * 100)+500   #turn  servo 100 pulse from 500-2500
       pi.set_servo_pulsewidth(gpioServo, pulse)
       print(servoPos)
-      time.sleep(0.1)
       vis = sensor.readVisible()
       IR = sensor.readIR()
       UV = sensor.readUV()
