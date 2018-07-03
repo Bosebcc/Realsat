@@ -17,7 +17,7 @@ uvIrradiance = None
 stepPos = None
 
 sys.path.append('./SDL_Pi_SI1145');
-import time import sleep
+import time
 
 #servo
 pi = pigpio.pi()
@@ -216,7 +216,7 @@ if __name__ == "__main__":
             pulse = (x * 100)+500   #turn  servo 100 pulse from 500-2500
             pi.set_servo_pulsewidth(gpioServo, pulse)
             print(servoPos)
-            sleep(0.05)
+            time.sleep(0.05)
             vis = sensor.readVisible()
             IR = sensor.readIR()
             UV = sensor.readUV()
