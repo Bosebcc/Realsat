@@ -11,5 +11,5 @@ data=[trace]
 plotly.offline.iplot({
     "data": [go.Scatter(z = [[1, 20, 30],
                           [20, 1, 60],
-                          [30, 60, 1]]]),
+                          [30, 60, 1]]),
     "layout": go.Layout(title="basic-heatmap")
