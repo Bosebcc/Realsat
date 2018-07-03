@@ -211,7 +211,7 @@ if __name__ == "__main__":
     #stepper
     for numOfTurn in range(24):
         degreeOfTurn = numOfTurn*15
-        m.move_to(b)
+        m.move_to(degreeOfTurn)
         for x in range(21):
             pulse = (x * 100)+500   #turn  servo 100 pulse from 500-2500
             pi.set_servo_pulsewidth(gpioServo, pulse)
