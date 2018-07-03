@@ -17,7 +17,7 @@ uvIrradiance = None
 stepPos = None
 
 sys.path.append('./SDL_Pi_SI1145');
-import time
+import time import sleep
 
 #servo
 pi = pigpio.pi()
