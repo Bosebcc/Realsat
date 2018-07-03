@@ -22,10 +22,10 @@ class Motor(object):
                 3: half step drive (default)
 
         """
-        self.P1 = pins[6]
-        self.P2 = pins[13]
-        self.P3 = pins[19]
-        self.P4 = pins[26]
+        self.P1 = pins[0]
+        self.P2 = pins[1]
+        self.P3 = pins[2]
+        self.P4 = pins[3]
         self.mode = mode
         self.deg_per_step = 5.625 / 64  # for half-step drive (mode 3)
         self.steps_per_rev = int(360 / self.deg_per_step)  # 4096
@@ -146,7 +146,7 @@ class Motor(object):
 
 if __name__ == "__main__":
     GPIO.setmode(GPIO.BOARD)
-    m = Motor([18,22,24,26])
+    m = Motor([6,13,19,26])
     m.rpm = 5
     print "Pause in seconds: " + `m._T`
     m.move_to(90)
