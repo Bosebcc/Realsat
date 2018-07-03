@@ -13,6 +13,10 @@ servoPos = None
 highVisible = 0
 stepPos = None
 
+import pigpio
+
+
+pi = pigpio.pi()
 import RPi.GPIO as GPIO
 import time
 GPIO.setmode(GPIO.BCM)
