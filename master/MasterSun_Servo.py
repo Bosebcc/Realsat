@@ -216,6 +216,7 @@ if __name__ == "__main__":
         for x in range(21):
             if x <= 2:
                 pulse = (x * 100)+500
+                pi.set_servo_pulsewidth(gpioServo, pulse)
                 time.sleep(0.5)
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
@@ -233,7 +234,6 @@ if __name__ == "__main__":
             else:
                 pulse = (x * 100)+500   #turn  servo 100 pulse from 500-2500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
-                print(servoPos)
                 time.sleep(0.025)
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
