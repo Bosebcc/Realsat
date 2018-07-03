@@ -152,6 +152,8 @@ if __name__ == "__main__":
     for x in range(11):
         y = x*36
         m.move_to(y)
+    for a in range(11)
+        b = 360 - (a*36)
     m.move_to(180)
     sleep(1)
     m.move_to(0)
