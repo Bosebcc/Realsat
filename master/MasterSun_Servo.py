@@ -217,7 +217,7 @@ if __name__ == "__main__":
             if x <= 1:
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.2)
+                time.sleep(0.3)
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
                 UV = sensor.readUV()
