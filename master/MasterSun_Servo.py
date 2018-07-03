@@ -18,6 +18,7 @@ stepPos = None
 
 sys.path.append('./SDL_Pi_SI1145');
 import time
+from time import sleep
 
 #servo
 pi = pigpio.pi()
