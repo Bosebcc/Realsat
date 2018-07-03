@@ -161,5 +161,4 @@ if __name__ == "__main__":
     m.move_to(180)
     sleep(1)
     m.move_to(0)
-    '''
     GPIO.cleanup()
