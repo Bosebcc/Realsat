@@ -149,12 +149,12 @@ if __name__ == "__main__":
     m = Motor([6,13,19,26])
     m.rpm = 5
     print "Pause in seconds: " + `m._T`
-    m.move_to(90)
+    m.move_to(180)
     sleep(1)
     m.move_to(0)
     sleep(1)
     m.mode = 2
-    m.move_to(90)
+    m.move_to(180)
     sleep(1)
     m.move_to(0)
     GPIO.cleanup()
