@@ -1,42 +1,14 @@
-#StepperMotor
-import pigpio
+#!/usr/bin/env python
 
-#servo
-pulse = None
-gpioServo = 4
-servoPos = None
+# This code is written by Stephen C Phillips.
+# It is in the public domain, so you can do what you like with it
+# but a link to http://scphillips.com would be nice.
 
-#Grove Sunlight Sensor
-import sys
-import os
-pulse = None
-gpioServo = 4
-servoPos = None
-highVisible = 0
-uvIrradiance = None
-stepPos = None
+# It works on the Raspberry Pi computer with the standard Debian Wheezy OS and
+# the 28BJY-48 stepper motor with ULN2003 control board.
 
-sys.path.append('./SDL_Pi_SI1145');
-import time
 from time import sleep
-
-#servo
-pi = pigpio.pi()
 import RPi.GPIO as GPIO
-
-#set up GPIO using BCM numbering
-GPIO.setmode(GPIO.BCM)
-
-LED = 4
-
-GPIO.setup(LED, GPIO.OUT, initial=0)
-
-from datetime import datetime
-
-
-import SDL_Pi_SI1145
-
-sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
 
 class Motor(object):
     def __init__(self, pins, mode=3):
@@ -171,71 +143,22 @@ class Motor(object):
             GPIO.output(self.P4, 1)
             sleep(self._T)
 
-def readSunLight():
-
-        vis = sensor.readVisible()
-        IR = sensor.readIR()
-        UV = sensor.readUV()
-        uvIndex = UV / 100.0
-        print('SunLight Sensor read at time: %s' % datetime.now())
-        print '		Vis:             ' + str(vis)
-        print '		IR:              ' + str(IR)
-        print '		UV Index:        ' + str(uvIndex)
-
-        #Warning
-        if uvIndex <= 3 :
-            print "Warning:" + "Wear Sun Glass; Low UV"
-        elif uvIndex > 3 and uvIndex <= 6 :
-            print "Warning:" + "Take cover when avalible; Moderate UV"
-        elif uvIndex > 6 and uvIndex >= 8 :
-            print "Warning:" + "Apply SPF 30+ sunscreen, don't stay out more than 3 hours; High UV"
-        elif uvIndex > 8 and uvIndex >= 11 :
-            print "Warning:" + "Do not stay in the sun for too long; Very High UV"
-        else :
-            print "Warning:" + "Take all Percautions; Extreme UV"
-
-        #uvIrradiance
-        #uvIrradiance = uvIndex * 0.025
-        #print "Uv Irradiance: " + uvIrradiance
-
-	returnValue = []
-	returnValue.append(vis)
-	returnValue.append(IR)
-	returnValue.append(uvIndex)
-	return returnValue
 
 if __name__ == "__main__":
     GPIO.setmode(GPIO.BCM)
     m = Motor([6,13,19,26])
     m.rpm = 10
     print "Pause in seconds: " + `m._T`
-    #stepper
-    for numOfTurn in range(24):
-        degreeOfTurn = numOfTurn*15
-        m.move_to(degreeOfTurn)
-        for x in range(21):
-            pulse = (x * 100)+500   #turn  servo 100 pulse from 500-2500
-            pi.set_servo_pulsewidth(gpioServo, pulse)
-            print(servoPos)
-            time.sleep(0.05)
-            vis = sensor.readVisible()
-            IR = sensor.readIR()
-            UV = sensor.readUV()
-            uvIndex = UV / 100.0
-            if highVisible < uvIndex:
-                servoPos = x
-                stepPos = degreeOfTurn
-                highVisible = uvIndex
-                pass
-            print('SunLight Sensor read at time: %s' % datetime.now())
-            print '		Vis:             ' + str(vis)
-            print '		IR:              ' + str(IR)
-            print '		UV Index:        ' + str(uvIndex)
-    servoPos = (servoPos * 100)+500
-    pi.set_servo_pulsewidth(gpioServo, servoPos)
-    print(servoPos)
-    m.move_to(stepPos)
-    time.sleep(1)
-    pi.set_servo_pulsewidth(gpioServo, 0)
-    pi.stop()
+    for x in range(24):
+        y = x*15
+        m.move_to(y)
+        sleep(0.2)
+    m.move_to(180)
+    sleep(1)
+    m.move_to(0)
+    sleep(1)
+    m.mode = 2
+    m.move_to(180)
+    sleep(1)
+    m.move_to(0)
     GPIO.cleanup()
