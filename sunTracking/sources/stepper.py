@@ -149,15 +149,10 @@ if __name__ == "__main__":
     m = Motor([6,13,19,26])
     m.rpm = 10
     print "Pause in seconds: " + `m._T`
-    for x in range(11):
-        y = x*36
+    for x in range(24):
+        y = x*15
         m.move_to(y)
         sleep(0.2)
-    for a in range(11):
-        b = 360 - (a*36)
-        m.move_to(b)
-        sleep(0.2)
-        '''
     m.move_to(180)
     sleep(1)
     m.move_to(0)
