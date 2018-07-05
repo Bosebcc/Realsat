@@ -1,9 +1,11 @@
 #Barometer
 import math
+state = True
 
 #Multithreading
 import thread
 import threading
+from threading import *
 # Variables
 getAltitude = None
 sea_press = 1013.25
@@ -332,15 +334,15 @@ def barometer():
    s = BME280.sensor(pi)
 
    stop = time.time() + 60
+   while (state)
+    while stop > time.time():
+       t, p, h = s.read_data()
+       getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
+       print("h={:.2f} p={:.2f} t={:.2f} Alt={:.1f}".format(h, p/100.0, t, getAltitude)) #:.2f set decimal to 2 places
+       time.sleep(0.9)
 
-   while stop > time.time():
-      t, p, h = s.read_data()
-      getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
-      print("h={:.2f} p={:.2f} t={:.2f} Alt={:.1f}".format(h, p/100.0, t, getAltitude)) #:.2f set decimal to 2 places
-      time.sleep(0.9)
-
-   s.cancel()
-   print "%s: %s" % ( threadName, time.ctime(time.time()) )
+    s.cancel()
+    print "%s: %s" % ( threadName, time.ctime(time.time()) )
 
 
 class Motor(object):
@@ -513,7 +515,7 @@ def readSunLight():
 	returnValue.append(uvIndex)
 	return returnValue
 
-class sunTracking(threading.Thread):
+def sunTracking():
     GPIO.setmode(GPIO.BCM)
     m = Motor([6,13,19,26])
     m.rpm = 10
@@ -563,13 +565,12 @@ class sunTracking(threading.Thread):
     m.move_to(stepPos)
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
+    state = False
 
 if __name__ == '__main__':
     thread1 = sunTracking()
-    thread2 = threading.Timer(1, barometer)
+    thread2 = barometer()
     thread1.start()
     thread2.start()
-    threads.append(thread1)
-    threads.append(thread2)
     pi.stop()
     GPIO.cleanup()
