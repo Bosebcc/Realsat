@@ -36,12 +36,12 @@ servoPos = None
 #Grove Sunlight Sensor
 import sys
 import os
-#pulse = None
+pulse = None
 gpioServo = 4
-#servoPos = None
-#highVisible = 0
-#uvIrradiance = None
-#stepPos = None
+servoPos = None
+highVisible = 0
+uvIrradiance = None
+stepPos = None
 
 sys.path.append('./SDL_Pi_SI1145');
 import time
@@ -516,6 +516,7 @@ def readSunLight():
 	return returnValue
 
 def sunTracking():
+    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse
     GPIO.setmode(GPIO.BCM)
     m = Motor([6,13,19,26])
     m.rpm = 10
@@ -566,7 +567,6 @@ def sunTracking():
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
     state = False
-    return highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse
 
 if __name__ == '__main__':
     thread1 = sunTracking()
