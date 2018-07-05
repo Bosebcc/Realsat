@@ -563,14 +563,11 @@ class sunTracking(threading.Thread):
     m.move_to(stepPos)
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
-    pi.stop()
-    GPIO.cleanup()
 
 if __name__ == '__main__':
     thread1 = sunTracking()
-    thread2 = barometer()
+    thread2 = threading.Timer(1, barometer)
     thread1.start()
-    print ("Starting sunTracking")
-    while :
-        thread.start()
-    print ("Exiting Main Thread")
+    thread2.start()
+    pi.stop()
+    GPIO.cleanup()
