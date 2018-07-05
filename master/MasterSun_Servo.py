@@ -36,12 +36,12 @@ servoPos = None
 #Grove Sunlight Sensor
 import sys
 import os
-pulse = None
+#pulse = None
 gpioServo = 4
-servoPos = None
-highVisible = 0
-uvIrradiance = None
-stepPos = None
+#servoPos = None
+#highVisible = 0
+#uvIrradiance = None
+#stepPos = None
 
 sys.path.append('./SDL_Pi_SI1145');
 import time
