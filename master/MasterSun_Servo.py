@@ -334,7 +334,7 @@ def barometer():
    s = BME280.sensor(pi)
 
    stop = time.time() + 60
-   while (state)
+   while (state):
     while stop > time.time():
        t, p, h = s.read_data()
        getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
