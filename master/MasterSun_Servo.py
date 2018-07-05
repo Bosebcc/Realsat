@@ -569,5 +569,7 @@ if __name__ == '__main__':
     thread2 = threading.Timer(1, barometer)
     thread1.start()
     thread2.start()
+    threads.append(thread1)
+    threads.append(thread2)
     pi.stop()
     GPIO.cleanup()
