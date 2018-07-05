@@ -566,6 +566,7 @@ def sunTracking():
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
     state = False
+return highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse
 
 if __name__ == '__main__':
     thread1 = sunTracking()
