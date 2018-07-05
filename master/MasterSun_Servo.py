@@ -3,7 +3,7 @@ import math
 
 #Multithreading
 import thread
-
+import threading
 # Variables
 getAltitude = None
 sea_press = 1013.25
