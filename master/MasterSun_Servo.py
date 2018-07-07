@@ -262,20 +262,20 @@ if __name__ == "__main__":
 ###  Check if it correct
 #        uvIrradiance
 #        #(dont use this line)uvIrradiance = uvIndex * 0.025 * 60(seconds) * 10 (J/m^2 to mJ/cm^2)
-            uvIrradiance = uvIndex * 0.025 * 60 * 10
-            print "Uv Irradiance: " + uvIrradiance
-         #so we will get UV Dose per minute by multiplying 60 seconds
+#            uvIrradiance = uvIndex * 0.025 * 60 * 10
+#            print "Uv Irradiance: " + uvIrradiance
+#         #so we will get UV Dose per minute by multiplying 60 seconds
 #
-            if uvIrradiance > 2.67 :
-                print "Human skin will start to burn and tanning under 15 minutes."
-            elif uvIrradiance <= 2.67 > 1.33 :
-                print "Human skin will start to burn and tanning within 15 minutes."
-            elif uvIrradiance <= 1.33 > 0.89 :
-                print "Human skin will start to burn and tanning within half an hour."
-            elif uvIrradiance <= 0.89 > 0.67 :
-                print "Human skin will start to burn and tanning within 45 minutes."
-            else uvIrradiance <= 0.67 :
-                print "Human skin will start to burn and tanning within an hour."
+#            if uvIrradiance > 2.67 :
+#                print "Human skin will start to burn and tanning under 15 minutes."
+#            elif uvIrradiance <= 2.67 > 1.33 :
+#                print "Human skin will start to burn and tanning within 15 minutes."
+#            elif uvIrradiance <= 1.33 > 0.89 :
+#                print "Human skin will start to burn and tanning within half an hour."
+#            elif uvIrradiance <= 0.89 > 0.67 :
+#                print "Human skin will start to burn and tanning within 45 minutes."
+#            else uvIrradiance <= 0.67 :
+#                print "Human skin will start to burn and tanning within an hour."
 #
 #
 #       print("Ps. This case is for Mediterranean, Asian and Latino people only")
