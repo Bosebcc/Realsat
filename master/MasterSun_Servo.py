@@ -569,8 +569,8 @@ def sunTracking():
     state = False
 
 if __name__ == '__main__':
-    thread1 = sunTracking()
     thread2 = barometer()
+    thread1 = sunTracking()
     thread1.run()
     thread2.run()
     pi.stop()
