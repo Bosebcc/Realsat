@@ -572,11 +572,11 @@ def sunTracking():
     print "Uv Irradiance: " + uvIrradiance
     if uvIrradiance > 2.67 :
         print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
-    elif uvIrradiance <= 2.67 and > uvIrradiance 1.33 :
+    elif uvIrradiance <= 2.67 and uvIrradiance > 1.33 :
         print "Your skin will start to burn and tanning within 15 minutes"
-    elif uvIrradiance <= 1.33 and > uvIrradiance 0.89 :
+    elif uvIrradiance <= 1.33 and uvIrradiance > 0.89 :
         print "Your skin will start to burn and tanning within half an hour"
-    elif uvIrradiance <= 0.89 and > uvIrradiance 0.67 :
+    elif uvIrradiance <= 0.89 and uvIrradiance > 0.67 :
         print "Your skin will start to burn and tanning within 45 minutes"
     else uvIrradiance <= 0.67 :
         print "Your skin will start to burn and tanning within an hour"
