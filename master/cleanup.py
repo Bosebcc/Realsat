@@ -6,7 +6,7 @@ GPIO.setmode(GPIO.BCM)
 LED = 4
 
 GPIO.setup(LED, GPIO.OUT, initial=0)
-
+pi = pigpio.pi()
 class Motor(object):
     def __init__(self, pins, mode=3):
         """Initialise the motor object.
@@ -31,4 +31,5 @@ class Motor(object):
             GPIO.setup(p, GPIO.OUT)
             GPIO.output(p, 0)
 
-    GPIO.cleanup()
+GPIO.cleanup()
+pi.stop()
