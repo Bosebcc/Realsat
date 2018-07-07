@@ -573,12 +573,12 @@ def sunTracking():
 if __name__ == '__main__':
     try:
         while True:
-        jobs = []
-        sun = multiprocessing.Process(target=sunTracking)
-        baro = multiprocessing.Process(target=barometer)
-        jobs.append(sun)
-        jobs.append(baro)
-        sun.start()
-        baro.start()
+            jobs = []
+            sun = multiprocessing.Process(target=sunTracking)
+            baro = multiprocessing.Process(target=barometer)
+            jobs.append(sun)
+            jobs.append(baro)
+            sun.start()
+            baro.start()
     except KeyboardInterrupt:
         GPIO.cleanup()
