@@ -1,6 +1,5 @@
 #Barometer
 import math
-state = False
 
 #Multithreading
 import thread
@@ -325,11 +324,10 @@ class sensor:
          self.h = None
 
 def barometer():
-
    import time
    import BME280
    import pigpio
-
+   state = True
    pi = pigpio.pi()
 
    if not pi.connected:
