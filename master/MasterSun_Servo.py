@@ -572,6 +572,7 @@ def sunTracking():
 
 if __name__ == '__main__':
     try:
+        while True:
         jobs = []
         sun = multiprocessing.Process(target=sunTracking)
         baro = multiprocessing.Process(target=barometer)
