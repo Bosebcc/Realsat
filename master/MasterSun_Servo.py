@@ -1,6 +1,6 @@
 #Barometer
 import math
-state = True
+state = False
 
 #Multithreading
 import thread
