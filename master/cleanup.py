@@ -1,36 +1,34 @@
-import cherrypy
+pi = pigpio.pi()
+import RPi.GPIO as GPIO
 
-from multiprocessing import Process, Pipe
+GPIO.setmode(GPIO.BCM)
 
+LED = 4
 
-class BaseHandler(Process):
-    def __init__(self, conn):
-        Process.__init__(self)
-        self.conn = conn
+GPIO.setup(LED, GPIO.OUT, initial=0)
 
-class HelloHandler(BaseHandler):
-    def run(self):
-        msg = self.conn.recv()
-        while msg != 'close':
-            self.conn.send('hello world from another process')
+class Motor(object):
+    def __init__(self, pins, mode=3):
+        """Initialise the motor object.
 
+        pins -- a list of 4 integers referring to the GPIO pins that the IN1, IN2
+                IN3 and IN4 pins of the ULN2003 board are wired to
+        mode -- the stepping mode to use:
+                1: wave drive (not yet implemented)
+                2: full step drive
+                3: half step drive (default)
 
-class HelloPage(object):
-    def __init__(self):
-        self.conn, child_conn = Pipe()
-        self.hello_processor = HelloHandler(child_conn)
-        self.hello_processor.start()
+        """
+        self.P1 = pins[0]
+        self.P2 = pins[1]
+        self.P3 = pins[2]
+        self.P4 = pins[3]
+        self.mode = mode
+        self.deg_per_step = 5.625 / 64  # for half-step drive (mode 3)
+        self.steps_per_rev = int(360 / self.deg_per_step)  # 4096
+        self.step_angle = 0  # Assume the way it is pointing is zero degrees
+        for p in pins:
+            GPIO.setup(p, GPIO.OUT)
+            GPIO.output(p, 0)
 
-    def index(self, *args, **kw):
-        self.conn.send(args)
-        return self.conn.recv()
-    index.exposed = True
-
-
-def run():
-    cherrypy.tree.mount(HelloPage(), '/')
-    cherrypy.quickstart()
-
-
-if __name__ == '__main__':
-    run()
+    GPIO.cleanup()
