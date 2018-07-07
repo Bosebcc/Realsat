@@ -1,24 +1,43 @@
 # coding: utf-8
 
-fh = open("testfile.txt","w")
+f = open("testfile.txt","w")
 
-fh.write("Hello World")
-fh.write("This is our new text file")
-fh.write("and this is another line")
-fh.write("Why, Because we can")
 
 x = "Hellooooooo"
-print x
+
+f.write(x)
+
+
+def classtest():
+    def cls1():
+        spam = "def1"
+
+    def cls2():
+        nonlocal 'spam'
+        spam = "def2"
+    def cls3():
+        global 'spam'
+        spam = "def3"
+
+    spam = "def4"
+    cls1()
+    print("Hello", spam)
+    cls2()
+    print("Test", spam)
+    cls3()
+    print("x", spam)
+
+classtest()
+print("Global", spam)
 
 
 
-
-
-fh.close()
+f.close()
 
 file = open("testfile.txt","r")
 for line in file:
     print line
+
 
 
 
