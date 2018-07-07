@@ -568,10 +568,9 @@ def sunTracking():
     pi.set_servo_pulsewidth(gpioServo, 0)
     state = False
 
-if __name__ == '__main__':
-    thread2 = barometer()
-    thread1 = sunTracking()
-    thread1.run()
-    thread2.run()
-    pi.stop()
-    GPIO.cleanup()
+thread2 = barometer()
+thread1 = sunTracking()
+thread1.start()
+thread2.start()
+pi.stop()
+GPIO.cleanup()
