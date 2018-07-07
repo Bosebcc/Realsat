@@ -338,7 +338,7 @@ def barometer():
    s = BME280.sensor(pi)
 
    stop = time.time() + 60
-   while (state):
+   while (state == True):
     while stop > time.time():
        t, p, h = s.read_data()
        getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
@@ -571,7 +571,7 @@ def sunTracking():
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
     state = False
-    return
+    return state
 
 if __name__ == '__main__':
     jobs = []
