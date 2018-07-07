@@ -29,6 +29,7 @@ OVER_SAMPLE_8 = 4
 OVER_SAMPLE_16 = 5
 stateSun = True
 
+
 #StepperMotor
 import pigpio
 
@@ -329,6 +330,7 @@ def barometer():
    import BME280
    import pigpio
    global stateSun
+  
    pi = pigpio.pi()
 
    if not pi.connected:
@@ -593,3 +595,6 @@ if __name__ == '__main__':
     jobs.append(baro)
     sun.start()
     baro.start()
+    pi.stop()
+    GPIO.cleanup()
+
