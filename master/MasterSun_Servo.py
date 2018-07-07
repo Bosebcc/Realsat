@@ -578,7 +578,7 @@ def sunTracking():
         print "Your skin will start to burn and tanning within half an hour"
     elif uvIrradiance <= 0.89 and uvIrradiance > 0.67 :
         print "Your skin will start to burn and tanning within 45 minutes"
-    else uvIrradiance <= 0.67 :
+    else :
         print "Your skin will start to burn and tanning within an hour"
     #print("Ps. This case is for Mediterranean, Asian and Latino people only")
     state = False
