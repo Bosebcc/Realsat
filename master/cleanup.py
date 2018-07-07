@@ -1,3 +1,4 @@
+import pigpio
 pi = pigpio.pi()
 import RPi.GPIO as GPIO
 
