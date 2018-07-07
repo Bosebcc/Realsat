@@ -578,3 +578,6 @@ if __name__ == '__main__':
     jobs.append(baro)
     sun.start()
     baro.start()
+
+    pi.stop()
+    GPIO.cleanup()
