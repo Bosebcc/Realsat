@@ -6,6 +6,10 @@ state = True
 import thread
 import threading
 from threading import *
+
+#Multiproccesing
+import multiprocessing
+
 # Variables
 getAltitude = None
 sea_press = 1013.25
@@ -343,7 +347,7 @@ def barometer():
 
     s.cancel()
     print "%s: %s" % ( threadName, time.ctime(time.time()) )
-
+    return
 
 class Motor(object):
     def __init__(self, pins, mode=3):
@@ -567,15 +571,13 @@ def sunTracking():
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
     state = False
+    return
 
 if __name__ == '__main__':
-    thread2 = barometer()
-    thread1 = sunTracking()
-    try:
-       thread.start_new_thread(barometer)
-       thread.start_new_thread(sunTracking)
-    except:
-       print "Error: unable to start thread"
-
-    while 1:
-       pass
+    jobs = []
+    sun = multiprocessing.Process(target=sunTracking)
+    baro = multiprocessing.Process(target=barometer)
+    jobs.append(sun)
+    jobs.append(baro)
+    sun.start()
+    baro.start()
