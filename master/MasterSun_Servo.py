@@ -567,6 +567,20 @@ def sunTracking():
     m.move_to(stepPos)
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
+    #calculating effect on human
+    uvIrradiance = uvIndex * 0.025 * 60 * 10
+    print "Uv Irradiance: " + uvIrradiance
+    if uvIrradiance > 2.67 :
+        print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
+    elif uvIrradiance <= 2.67 > 1.33 :
+        print "Your skin will start to burn and tanning within 15 minutes"
+    elif uvIrradiance <= 1.33 > 0.89 :
+        print "Your skin will start to burn and tanning within half an hour"
+    elif uvIrradiance <= 0.89 > 0.67 :
+        print "Your skin will start to burn and tanning within 45 minutes"
+    else uvIrradiance <= 0.67 :
+        print "Your skin will start to burn and tanning within an hour"
+    #print("Ps. This case is for Mediterranean, Asian and Latino people only")
     state = False
     return state
 
@@ -578,6 +592,3 @@ if __name__ == '__main__':
     jobs.append(baro)
     sun.start()
     baro.start()
-
-    pi.stop()
-    GPIO.cleanup()
