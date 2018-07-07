@@ -27,6 +27,8 @@ OVER_SAMPLE_2 = 2
 OVER_SAMPLE_4 = 3
 OVER_SAMPLE_8 = 4
 OVER_SAMPLE_16 = 5
+stateSun = True
+
 
 #StepperMotor
 import pigpio
@@ -327,7 +329,8 @@ def barometer():
    import time
    import BME280
    import pigpio
-   state = True
+   global stateSun
+  
    pi = pigpio.pi()
 
    if not pi.connected:
@@ -336,7 +339,7 @@ def barometer():
    s = BME280.sensor(pi)
 
    stop = time.time() + 60
-   if state == True:
+   if stateSun == True:
     while stop > time.time():
        t, p, h = s.read_data()
        getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
@@ -567,8 +570,22 @@ def sunTracking():
     m.move_to(stepPos)
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
-    state = False
-    return state
+    #calculating effect on human
+    uvIrradiance = highVisible * 0.025 * 60 * 10
+    print "Uv Irradiance: " + str(uvIrradiance)
+    if uvIrradiance > 2.67 :
+        print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
+    elif uvIrradiance <= 2.67 and uvIrradiance > 1.33 :
+        print "Your skin will start to burn and tanning within 15 minutes"
+    elif uvIrradiance <= 1.33 and uvIrradiance > 0.89 :
+        print "Your skin will start to burn and tanning within half an hour"
+    elif uvIrradiance <= 0.89 and uvIrradiance > 0.67 :
+        print "Your skin will start to burn and tanning within 45 minutes"
+    else :
+        print "Your skin will start to burn and tanning within an hour"
+    #print("Ps. This case is for Mediterranean, Asian and Latino people only")
+    stateSun = False
+    return stateSun
 
 if __name__ == '__main__':
     jobs = []
@@ -578,6 +595,6 @@ if __name__ == '__main__':
     jobs.append(baro)
     sun.start()
     baro.start()
-
     pi.stop()
     GPIO.cleanup()
+
