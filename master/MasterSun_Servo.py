@@ -571,12 +571,11 @@ def sunTracking():
 if __name__ == '__main__':
     thread2 = barometer()
     thread1 = sunTracking()
-    thread1.start()
-    thread2.start()
-    threads.append(thread1)
-    threads.append(thread2)
-    for t in threads:
-        t.join()
-    print "Exiting Main Thread"
-    pi.stop()
-    GPIO.cleanup()
+    try:
+       thread.start_new_thread(barometer)
+       thread.start_new_thread(sunTracking)
+    except:
+       print "Error: unable to start thread"
+
+    while 1:
+       pass
