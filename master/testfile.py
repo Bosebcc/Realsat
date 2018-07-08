@@ -2,35 +2,15 @@
 
 f = open("testfile.txt","w")
 
-
+y = int(5)
+z = int(6)
+a = y*z
 x = "Hellooooooo"
+print a
 
 f.write(x)
 
-
-def classtest():
-    def cls1():
-        spam = "def1"
-
-    def cls2():
-        nonlocal 'spam'
-        spam = "def2"
-    def cls3():
-        global 'spam'
-        spam = "def3"
-
-    spam = "def4"
-    cls1()
-    print("Hello", spam)
-    cls2()
-    print("Test", spam)
-    cls3()
-    print("x", spam)
-
-classtest()
-print("Global", spam)
-
-
+f.write(a)
 
 f.close()
 
