@@ -179,11 +179,11 @@ def readSunLight():
         IR = sensor.readIR()
         UV = sensor.readUV()
         uvIndex = UV / 100.0
-        sunlight1 = ('SunLight Sensor read at time: %s' % datetime.now())
+        sunsensor = ('SunLight Sensor read at time: %s' % datetime.now())
         Visual =    '		Vis:             ' + str(vis)
         IR =        '		IR:              ' + str(IR)
         uvindex1 =  '		UV Index:        ' + str(uvIndex)
-        print sunlight1
+        print sunsensor
         print Visual
         print IR
         print uvindex1
@@ -233,7 +233,7 @@ if __name__ == "__main__":
                     stepPos = degreeOfTurn
                     highVisible = uvIndex
                     pass
-                print sunlight1
+                print sunsensor
                 print Visual
                 print IR
                 print uvindex1
@@ -250,7 +250,7 @@ if __name__ == "__main__":
                     stepPos = degreeOfTurn
                     highVisible = uvIndex
                     pass
-                print sunlight1
+                print sunsensor
                 print Visual
                 print IR
                 print uvindex1
