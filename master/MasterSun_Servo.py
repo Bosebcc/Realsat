@@ -598,9 +598,11 @@ if __name__ == '__main__':
     sun.join()
     baro.join()
 
+    #data management
     f = open("sunlightdata.txt")
     file.write("Highest UV")
     file.write(time.ctime(time.time()))
     file.write(highVisible)
+
     pi.stop()
     GPIO.cleanup()
