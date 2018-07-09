@@ -520,7 +520,7 @@ def readSunLight():
 	return returnValue
 
 def sunTracking():
-    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse
+    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun
     GPIO.setmode(GPIO.BCM)
     m = Motor([6,13,19,26])
     m.rpm = 10
