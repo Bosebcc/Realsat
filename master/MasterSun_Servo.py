@@ -604,5 +604,7 @@ if __name__ == '__main__':
     file.write(time.ctime(time.time()))
     file.write(highVisible)
 
+    file.close()
+
     pi.stop()
     GPIO.cleanup()
