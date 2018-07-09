@@ -1,5 +1,5 @@
 import time
-hughVisible = 4.2
+highVisible = 4.2
 
 ctime = str(time.ctime(time.time()))
 light = str(highVisible)
