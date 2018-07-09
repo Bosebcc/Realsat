@@ -273,6 +273,9 @@ if __name__ == "__main__":
     pi.stop()
     GPIO.cleanup()
 
+# Storing Data Section
+f = open()
+
 
 
 ###  Check if it correct
