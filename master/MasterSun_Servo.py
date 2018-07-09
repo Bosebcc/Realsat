@@ -330,7 +330,7 @@ def barometer():
    import BME280
    import pigpio
    global stateSun
-  
+
    pi = pigpio.pi()
 
    if not pi.connected:
@@ -595,6 +595,12 @@ if __name__ == '__main__':
     jobs.append(baro)
     sun.start()
     baro.start()
+    sun.join()
+    baro.join()
+
+    f = open("sunlightdata.txt")
+    file.write("Highest UV")
+    file.write(time.ctime(time.time()))
+    file.write(highVisible)
     pi.stop()
     GPIO.cleanup()
-
