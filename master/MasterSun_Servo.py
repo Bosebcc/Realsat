@@ -44,7 +44,6 @@ import os
 pulse = None
 gpioServo = 4
 servoPos = None
-highVisible = None
 uvIrradiance = None
 stepPos = None
 
@@ -541,7 +540,7 @@ def sunTracking():
     uvIrradiance = highVisible * 0.025 * 60
     print "Uv Irradiance: " + str(uvIrradiance)
     if uvIrradiance > 2.67 :
-        print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
+        print "Bright White People will get uv dose that "
     elif uvIrradiance <= 2.67 and uvIrradiance > 1.33 :
         print "Your skin will start to burn and tanning within 15 minutes"
     elif uvIrradiance <= 1.33 and uvIrradiance > 0.89 :
@@ -555,6 +554,8 @@ def sunTracking():
     return stateSun, highVisible
 
 if __name__ == '__main__':
+    global highVisible
+    highVisible = None
     jobs = []
     sun = multiprocessing.Process(target=sunTracking)
     baro = multiprocessing.Process(target=barometer)
@@ -566,7 +567,6 @@ if __name__ == '__main__':
     baro.join()
 
     #data management
-    global highVisible
     ctime = str(time.ctime(time.time()))
     uvWrite = str(highVisible)
     file = open("sunlightdata.txt" ,"w")
