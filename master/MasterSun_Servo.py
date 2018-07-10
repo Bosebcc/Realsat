@@ -39,6 +39,7 @@ gpioServo = 4
 servoPos = None
 
 #Grove Sunlight Sensor
+highVisible = 0
 import sys
 import os
 pulse = None
@@ -554,8 +555,6 @@ def sunTracking():
     return stateSun, highVisible
 
 if __name__ == '__main__':
-    global highVisible
-    highVisible = None
     jobs = []
     sun = multiprocessing.Process(target=sunTracking)
     baro = multiprocessing.Process(target=barometer)
