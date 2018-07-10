@@ -329,7 +329,6 @@ def barometer():
    import time
    import BME280
    import pigpio
-   global stateSun
 
    pi = pigpio.pi()
 
@@ -552,7 +551,6 @@ def sunTracking():
         print "Your skin will start to burn and tanning more than an hour"
     #print("Ps. This case is for Mediterranean, Asian and Latino people only")
     stateSun = False
-    return stateSun, highVisible
 
 if __name__ == '__main__':
     jobs = []
