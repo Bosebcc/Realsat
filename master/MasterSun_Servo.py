@@ -538,7 +538,7 @@ def sunTracking():
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
     #calculating effect on human
-    uvIrradiance = highVisible * 0.025 * 60
+    uvIrradiance = highVisible * 0.025 * 60 * 10
     print "Uv Irradiance: " + str(uvIrradiance)
     if uvIrradiance > 2.67 :
         print "Bright White People will get uv dose that "
