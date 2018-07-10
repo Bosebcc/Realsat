@@ -486,39 +486,6 @@ class Motor(object):
 import SDL_Pi_SI1145
 sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
 
-def readSunLight():
-
-        vis = sensor.readVisible()
-        IR = sensor.readIR()
-        UV = sensor.readUV()
-        uvIndex = UV / 100.0
-        print('SunLight Sensor read at time: %s' % datetime.now())
-        print '		Vis:             ' + str(vis)
-        print '		IR:              ' + str(IR)
-        print '		UV Index:        ' + str(uvIndex)
-
-        #Warning
-        if uvIndex <= 3 :
-            print "Warning:" + "Wear Sun Glass; Low UV"
-        elif uvIndex > 3 and uvIndex <= 6 :
-            print "Warning:" + "Take cover when avalible; Moderate UV"
-        elif uvIndex > 6 and uvIndex >= 8 :
-            print "Warning:" + "Apply SPF 30+ sunscreen, don't stay out more than 3 hours; High UV"
-        elif uvIndex > 8 and uvIndex >= 11 :
-            print "Warning:" + "Do not stay in the sun for too long; Very High UV"
-        else :
-            print "Warning:" + "Take all Percautions; Extreme UV"
-
-        #uvIrradiance
-        #uvIrradiance = uvIndex * 0.025
-        #print "Uv Irradiance: " + uvIrradiance
-
-	returnValue = []
-	returnValue.append(vis)
-	returnValue.append(IR)
-	returnValue.append(uvIndex)
-	return returnValue
-
 def sunTracking():
     global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun
     GPIO.setmode(GPIO.BCM)
@@ -582,10 +549,10 @@ def sunTracking():
     elif uvIrradiance <= 0.89 and uvIrradiance > 0.67 :
         print "Your skin will start to burn and tanning within 45 minutes"
     else :
-        print "Your skin will start to burn and tanning within an hour"
+        print "Your skin will start to burn and tanning more than an hour"
     #print("Ps. This case is for Mediterranean, Asian and Latino people only")
     stateSun = False
-    return stateSun
+    return stateSun, highVisible
 
 if __name__ == '__main__':
     jobs = []
@@ -603,8 +570,8 @@ if __name__ == '__main__':
     ctime = str(time.ctime(time.time()))
     uvWrite = str(highVisible)
     file = open("sunlightdata.txt" ,"w")
-    file.write("Highest UV")
-    file.write(ctime + "\n")
+    file.write("Highest UV \n")
+    file.write(ctime)
     file.write(" = ")
     file.write(uvWrite)
 
