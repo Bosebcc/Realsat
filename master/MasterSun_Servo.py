@@ -603,7 +603,7 @@ if __name__ == '__main__':
     uv = str(highVisible)
     file = open("sunlightdata.txt")
     file.write("Highest UV")
-    file.write(ctime)
+    file.write(ctime + "/n")
     file.write(highVisible)
 
     file.close()
