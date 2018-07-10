@@ -44,7 +44,6 @@ import os
 pulse = None
 gpioServo = 4
 servoPos = None
-highVisible = 0
 uvIrradiance = None
 stepPos = None
 
@@ -547,7 +546,7 @@ def sunTracking():
     elif uvIrradiance <= 1.33 and uvIrradiance > 0.89 :
         print "Your skin will start to burn and tanning within half an hour"
     elif uvIrradiance <= 0.89 and uvIrradiance > 0.67 :
-        print "Your skin will start to burn and tanning within 45 minutes"
+        print "Your skin will start to burn and tanning within w"
     else :
         print "Your skin will start to burn and tanning more than an hour"
     #print("Ps. This case is for Mediterranean, Asian and Latino people only")
