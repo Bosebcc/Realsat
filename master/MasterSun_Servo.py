@@ -599,9 +599,11 @@ if __name__ == '__main__':
     baro.join()
 
     #data management
-    f = open("sunlightdata.txt")
+    ctime = str(time.ctime(time.time()))
+    uv = str(highVisible)
+    file = open("sunlightdata.txt")
     file.write("Highest UV")
-    file.write(time.ctime(time.time()))
+    file.write(ctime)
     file.write(highVisible)
 
     file.close()
