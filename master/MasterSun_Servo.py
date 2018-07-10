@@ -601,7 +601,7 @@ if __name__ == '__main__':
     #data management
     ctime = str(time.ctime(time.time()))
     uv = str(highVisible)
-    file = open("sunlightdata.txt")
+    file = open("sunlightdata.txt" ,"w")
     file.write("Highest UV")
     file.write(ctime + "/n")
     file.write(highVisible)
