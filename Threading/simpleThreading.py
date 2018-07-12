@@ -1,12 +1,12 @@
-#Example2.py
+
+#Example.py
 '''
-A more realistic thread pool example
+Standard Producer/Consumer Threading Pattern
 '''
 
 import time
 import threading
 import Queue
-import urllib2
 
 class Consumer(threading.Thread):
   def __init__(self, queue):
@@ -15,41 +15,46 @@ class Consumer(threading.Thread):
 
   def run(self):
     while True:
-      content = self._queue.get()
-      if isinstance(content, str) and content == 'quit':
+      # queue.get() blocks the current thread until
+      # an item is retrieved.
+      msg = self._queue.get()
+      # Checks if the current message is
+      # the "Poison Pill"
+      if isinstance(msg, str) and msg == 'quit':
+        # if so, exists the loop
         break
-      response = urllib2.urlopen(content)
-    print 'Bye byes!'
+      # "Processes" (or in our case, prints) the queue item
+      print ("I'm a thread, and I received %s!!" % msg)
+    # Always be friendly!
+    print ('Bye byes!')
 
 
 def Producer():
-  urls = [
-    'http://www.python.org', 'http://www.yahoo.com'
-    'http://www.scala.org', 'http://www.google.com'
-    # etc..
-  ]
+  # Queue is used to share items between
+  # the threads.
   queue = Queue.Queue()
-  worker_threads = build_worker_pool(queue, 4)
+
+  # Create an instance of the worker
+  worker = Consumer(queue)
+  # start calls the internal run() method to
+  # kick off the thread
+  worker.start()
+
+  # variable to keep track of when we started
   start_time = time.time()
+  # While under 5 seconds..
+  while time.time() - start_time < 5:
+    # "Produce" a piece of work and stick it in
+    # the queue for the Consumer to process
+    queue.put('something at %s' % time.time())
+    # Sleep a bit just to avoid an absurd number of messages
+    time.sleep(1)
 
-  # Add the urls to process
-  for url in urls:
-    queue.put(url)
-  # Add the poison pillv
-  for worker in worker_threads:
-    queue.put('quit')
-  for worker in worker_threads:
-    worker.join()
+  # This the "poison pill" method of killing a thread.
+  queue.put('quit')
+  # wait for the thread to close down
+  worker.join()
 
-  print 'Done! Time taken: {}'.format(time.time() - start_time)
-
-def build_worker_pool(queue, size):
-  workers = []
-  for _ in range(size):
-    worker = Consumer(queue)
-    worker.start()
-    workers.append(worker)
-  return workers
 
 if __name__ == '__main__':
   Producer()
