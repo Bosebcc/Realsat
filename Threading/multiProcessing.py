@@ -1,6 +1,11 @@
 import multiprocessing
 import time
 state = 1
+
+from multiprocessing import Process,Manager
+
+mylist = Manager.list()
+
 def sunTracking():
     global state
     for x in range(5):
@@ -8,7 +13,6 @@ def sunTracking():
         print("value" + x)
         time.sleep(0.5)
     state = 0
-    return state
 def barometer():
     print(state)
     '''

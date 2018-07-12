@@ -2,8 +2,7 @@
 import math
 
 #Multithreading
-import thread
-import threading
+from threading import Thread
 from threading import *
 
 #Multiproccesing
@@ -555,8 +554,8 @@ def sunTracking():
 
 if __name__ == '__main__':
     jobs = []
-    sun = multiprocessing.Process(target=sunTracking)
-    baro = multiprocessing.Process(target=barometer)
+    sun = Thread(target=sunTracking)
+    baro = Thread(target=barometer)
     jobs.append(sun)
     jobs.append(baro)
     sun.start()
