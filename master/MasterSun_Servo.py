@@ -325,28 +325,28 @@ class sensor:
          self.h = None
 
 def barometer():
-   import time
-   import BME280
-   import pigpio
+    import time
+    import BME280
+    import pigpio
 
-   pi = pigpio.pi()
+    pi = pigpio.pi()
 
-   if not pi.connected:
+    if not pi.connected:
       exit(0)
 
-   s = BME280.sensor(pi)
+    s = BME280.sensor(pi)
 
-   stop = time.time() + 60
-   if stateSun == True:
-    while stop > time.time():
-       t, p, h = s.read_data()
-       getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
-       print("h={:.2f} p={:.2f} t={:.2f} Alt={:.1f}".format(h, p/100.0, t, getAltitude)) #:.2f set decimal to 2 places
-       time.sleep(0.9)
-       print(stateSun)
-   else:
-    s.cancel()
-    return
+    stop = time.time() + 60
+    while True:
+        if stateSun == True
+        #while stop > time.time():
+            t, p, h = s.read_data()
+            getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
+            print("h={:.2f} p={:.2f} t={:.2f} Alt={:.1f}".format(h, p/100.0, t, getAltitude)) #:.2f set decimal to 2 places
+            time.sleep(1)
+        if stateSun == False:
+            s.cancel()
+            break
 
 class Motor(object):
     def __init__(self, pins, mode=3):
