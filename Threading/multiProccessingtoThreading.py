@@ -2,6 +2,7 @@ from threading import Thread
 import time
 state = 1
 
+
 def sunTracking():
     global state
     for x in range(5):
@@ -9,13 +10,15 @@ def sunTracking():
         print("value" + x)
         time.sleep(0.5)
     state = 0
+
+
 def barometer():
     print(state)
     while True:
-        if state == True:
+        if state:
             print ("true")
             time.sleep(0.5)
-        if state == False:
+        if state:
             print("break")
             break
 
