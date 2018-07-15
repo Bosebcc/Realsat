@@ -1,5 +1,7 @@
-import plotly
+import plotly.offline as offline
 import plotly.graph_objs as go
 
-plotly.offline.plot({
-    go.Scatter(y=[2,3], x=[4,5], name='line')
+offline.plot({'data': [{'y': [4, 2, 3, 4]}],
+               'layout': {'title': 'Test Plot',
+                          'font': dict(size=16)}},
+             image='png')
