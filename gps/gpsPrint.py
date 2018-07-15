@@ -1,6 +1,6 @@
-import gpsmon
+import serial
 
-gps = gpsmon("/dev/ttyACM0", baudrate = 9600)
+gps = serial.Serial("/dev/ttyACM0", baudrate = 9600)
 
 while True:
     line = gps.readLine()
