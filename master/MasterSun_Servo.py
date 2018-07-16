@@ -9,7 +9,6 @@ from threading import *
 import multiprocessing
 
 # Variables
-getAltitude = None
 sea_press = 1013.25
 
 # Interface
