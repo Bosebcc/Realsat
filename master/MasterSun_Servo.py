@@ -27,7 +27,9 @@ OVER_SAMPLE_4 = 3
 OVER_SAMPLE_8 = 4
 OVER_SAMPLE_16 = 5
 stateSun = True
-
+t = None
+p = None
+h = None
 
 #StepperMotor
 import pigpio
@@ -325,6 +327,7 @@ class sensor:
          self.h = None
 
 def barometer():
+    global t, p, h, getAltitude
     import time
     import BME280
     import pigpio
@@ -503,6 +506,37 @@ def sunTracking():
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
                 UV = sensor.readUV()
+
+                #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
+                ctime = str(time.ctime(time.time()))
+                uvLog = str(UV)
+                getAltitude = str(getAltitude)
+                pulseLog = str(pulse)
+                stepperPosCurrent = 0
+                stepperPosCurrent += degreeOfTurn
+                stepperLog = str(stepperPosCurrent)
+                t = str(t)
+                p = str(p)
+                h = str(h)
+
+                file.write("\n")
+                file.write(ctime)
+                file.write(" , ")
+                file.write(getAltitude)
+                file.write(" , ")
+                file.write(uvLog)
+                file.write(" , ")
+                file.write(pulse)
+                file.write(" , ")
+                file.write(stepperLog)
+                file.write(" , ")
+                file.write(t)
+                file.write(" , ")
+                file.write(p)
+                file.write(" , ")
+                file.write(h)
+                file.write(" , ")
+
                 uvIndex = UV / 100.0
                 if highVisible < uvIndex:
                     servoPos = x
@@ -521,6 +555,37 @@ def sunTracking():
                 IR = sensor.readIR()
                 UV = sensor.readUV()
                 uvIndex = UV / 100.0
+
+                #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
+                ctime = str(time.ctime(time.time()))
+                uvLog = str(UV)
+                getAltitude = str(getAltitude)
+                pulseLog = str(pulse)
+                stepperPosCurrent = 0
+                stepperPosCurrent += degreeOfTurn
+                stepperLog = str(stepperPosCurrent)
+                t = str(t)
+                p = str(p)
+                h = str(h)
+
+                file.write("\n")
+                file.write(ctime)
+                file.write(" , ")
+                file.write(getAltitude)
+                file.write(" , ")
+                file.write(uvLog)
+                file.write(" , ")
+                file.write(pulse)
+                file.write(" , ")
+                file.write(stepperLog)
+                file.write(" , ")
+                file.write(t)
+                file.write(" , ")
+                file.write(p)
+                file.write(" , ")
+                file.write(h)
+                file.write(" , ")
+
                 if highVisible < uvIndex:
                     servoPos = x
                     stepPos = degreeOfTurn
@@ -553,6 +618,12 @@ def sunTracking():
     stateSun = False
 
 if __name__ == '__main__':
+    ctime = str(time.ctime(time.time()))
+    uvWrite = str(highVisible)
+    file = open("sunlightdata.txt" ,"w")
+    file.write("Log Data")
+    file.write("  Time  , Alt  ,  UV  , Steppper , Servo(Pulse) , Temp , Pressure , Humidity\n")
+    file.write("_________________________________________________ \n")
     jobs = []
     sun = Thread(target=sunTracking)
     baro = Thread(target=barometer)
@@ -563,10 +634,8 @@ if __name__ == '__main__':
     sun.join()
     baro.join()
 
-    #data management
-    ctime = str(time.ctime(time.time()))
-    uvWrite = str(highVisible)
-    file = open("sunlightdata.txt" ,"w")
+    #highestUV record
+    file.write("_________________________________________________ \n")
     file.write("Highest UV \n")
     file.write(ctime)
     file.write(" = ")
