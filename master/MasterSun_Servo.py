@@ -499,7 +499,7 @@ def sunTracking():
         degreeOfTurn = numOfTurn*15
         m.move_to(degreeOfTurn)
         for x in range(21):
-            if x <= 1:
+            if x <= 1
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
                 time.sleep(0.3)
@@ -507,9 +507,11 @@ def sunTracking():
                 IR = sensor.readIR()
                 UV = sensor.readUV()
 
+                uvIndex = UV / 100.0
+
                 #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
                 ctime = str(time.ctime(time.time()))
-                uvLog = str(UV)
+                uvLog = str(uvIndex)
                 altitudeLog = str(getAltitude)
                 pulseLog = str(pulse)
                 stepperPosCurrent = 0
@@ -541,7 +543,6 @@ def sunTracking():
                 file.write(" , ")
                 '''
 
-                uvIndex = UV / 100.0
                 if highVisible < uvIndex:
                     servoPos = x
                     stepPos = degreeOfTurn
@@ -562,7 +563,7 @@ def sunTracking():
 
                 #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
                 ctime = str(time.ctime(time.time()))
-                uvLog = str(UV)
+                uvLog = str(uvIndex)
                 altitudeLog = str(getAltitude)
                 pulseLog = str(pulse)
                 stepperPosCurrent = 0
