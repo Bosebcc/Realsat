@@ -499,7 +499,7 @@ def sunTracking():
         degreeOfTurn = numOfTurn*15
         m.move_to(degreeOfTurn)
         for x in range(21):
-            if x <= 1
+            if x <= 1:
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
                 time.sleep(0.3)
