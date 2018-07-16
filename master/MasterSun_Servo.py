@@ -9,7 +9,7 @@ from threading import *
 import multiprocessing
 
 # Variables
-getAltitude = None
+getAltitude = 0
 sea_press = 1013.25
 
 # Interface
@@ -630,6 +630,7 @@ if __name__ == '__main__':
     jobs.append(baro)
     jobs.append(sun)
     baro.start()
+    time.sleep(0.5)
     sun.start()
     sun.join()
     baro.join()
