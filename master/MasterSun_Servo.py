@@ -327,7 +327,7 @@ class sensor:
          self.h = None
 
 def barometer():
-    global t, p, h, getAltitude
+    global getAltitude
     import time
     import BME280
     import pigpio
@@ -630,7 +630,6 @@ if __name__ == '__main__':
     jobs.append(baro)
     jobs.append(sun)
     baro.start()
-    time.sleep(0.5)
     sun.start()
     sun.join()
     baro.join()
