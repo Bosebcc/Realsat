@@ -327,7 +327,7 @@ class sensor:
          self.h = None
 
 def barometer():
-    global getAltitude
+    #global t, p, h, getAltitude
     import time
     import BME280
     import pigpio
@@ -559,7 +559,7 @@ def sunTracking():
                 #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
                 ctime = str(time.ctime(time.time()))
                 uvLog = str(UV)
-                getAltitude = str(getAltitude)
+                altitudeLog = str(getAltitude)
                 pulseLog = str(pulse)
                 stepperPosCurrent = 0
                 stepperPosCurrent += degreeOfTurn
@@ -571,7 +571,7 @@ def sunTracking():
                 file.write("\n")
                 file.write(ctime)
                 file.write(" , ")
-                file.write(getAltitude)
+                file.write(altitudeLog)
                 file.write(" , ")
                 file.write(uvLog)
                 file.write(" , ")
