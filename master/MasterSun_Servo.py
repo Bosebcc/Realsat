@@ -530,12 +530,14 @@ def sunTracking():
                 file.write(" , ")
                 file.write(stepperLog)
                 file.write(" , ")
+                '''
                 file.write(t)
                 file.write(" , ")
                 file.write(p)
                 file.write(" , ")
                 file.write(h)
                 file.write(" , ")
+                '''
 
                 uvIndex = UV / 100.0
                 if highVisible < uvIndex:
@@ -579,12 +581,14 @@ def sunTracking():
                 file.write(" , ")
                 file.write(stepperLog)
                 file.write(" , ")
+                '''
                 file.write(t)
                 file.write(" , ")
                 file.write(p)
                 file.write(" , ")
                 file.write(h)
                 file.write(" , ")
+                '''
 
                 if highVisible < uvIndex:
                     servoPos = x
