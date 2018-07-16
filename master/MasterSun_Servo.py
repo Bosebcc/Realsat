@@ -640,8 +640,8 @@ if __name__ == '__main__':
     jobs.append(sun)
     baro.start()
     sun.start()
-    sun.join()
     baro.join()
+    sun.join()
 
     #highestUV record
     file.write("_________________________________________________ \n")
