@@ -9,6 +9,7 @@ from threading import *
 import multiprocessing
 
 # Variables
+getAltitude = None
 sea_press = 1013.25
 
 # Interface
@@ -509,7 +510,7 @@ def sunTracking():
                 #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
                 ctime = str(time.ctime(time.time()))
                 uvLog = str(UV)
-                getAltitude = str(getAltitude)
+                altitudeLog = str(getAltitude)
                 pulseLog = str(pulse)
                 stepperPosCurrent = 0
                 stepperPosCurrent += degreeOfTurn
@@ -521,7 +522,7 @@ def sunTracking():
                 file.write("\n")
                 file.write(ctime)
                 file.write(" , ")
-                file.write(getAltitude)
+                file.write(altitudeLog)
                 file.write(" , ")
                 file.write(uvLog)
                 file.write(" , ")
