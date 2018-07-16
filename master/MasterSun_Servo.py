@@ -515,9 +515,11 @@ def sunTracking():
                 stepperPosCurrent = 0
                 stepperPosCurrent += degreeOfTurn
                 stepperLog = str(stepperPosCurrent)
+                '''
                 t = str(t)
                 p = str(p)
                 h = str(h)
+                '''
 
                 file.write("\n")
                 file.write(ctime)
@@ -566,9 +568,11 @@ def sunTracking():
                 stepperPosCurrent = 0
                 stepperPosCurrent += degreeOfTurn
                 stepperLog = str(stepperPosCurrent)
+                '''
                 t = str(t)
                 p = str(p)
                 h = str(h)
+                '''
 
                 file.write("\n")
                 file.write(ctime)
