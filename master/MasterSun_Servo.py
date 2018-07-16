@@ -627,10 +627,10 @@ if __name__ == '__main__':
     jobs = []
     sun = Thread(target=sunTracking)
     baro = Thread(target=barometer)
-    jobs.append(sun)
     jobs.append(baro)
-    sun.start()
+    jobs.append(sun)
     baro.start()
+    sun.start()
     sun.join()
     baro.join()
 
