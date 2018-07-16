@@ -30,6 +30,8 @@ jobs:
       - run:
           name: install dependencies
           command: |
+            git checkout master
+            git getch
             git pull
             pip install --upgrade pip
             python3 -m venv venv
