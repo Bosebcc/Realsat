@@ -636,12 +636,12 @@ if __name__ == '__main__':
     jobs = []
     sun = Thread(target=sunTracking)
     baro = Thread(target=barometer)
-    jobs.append(baro)
     jobs.append(sun)
-    baro.start()
+    jobs.append(baro)
     sun.start()
-    baro.join()
+    baro.start()
     sun.join()
+    baro.join()
 
     #highestUV record
     file.write("_________________________________________________ \n")
