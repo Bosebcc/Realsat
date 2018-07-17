@@ -2,15 +2,14 @@
 import math
 
 #Multithreading
-import thread
-import threading
+from threading import Thread
 from threading import *
 
 #Multiproccesing
 import multiprocessing
 
 # Variables
-getAltitude = None
+getAltitude = 0
 sea_press = 1013.25
 
 # Interface
@@ -29,6 +28,10 @@ OVER_SAMPLE_8 = 4
 OVER_SAMPLE_16 = 5
 stateSun = True
 
+t = None
+p = None
+h = None
+
 
 #StepperMotor
 import pigpio
@@ -39,12 +42,12 @@ gpioServo = 4
 servoPos = None
 
 #Grove Sunlight Sensor
+highVisible = 0
 import sys
 import os
 pulse = None
 gpioServo = 4
 servoPos = None
-highVisible = 0
 uvIrradiance = None
 stepPos = None
 
@@ -326,28 +329,29 @@ class sensor:
          self.h = None
 
 def barometer():
-   import time
-   import BME280
-   import pigpio
-   global stateSun
-  
-   pi = pigpio.pi()
+    #global t, p, h, getAltitude
+    import time
+    import BME280
+    import pigpio
 
-   if not pi.connected:
+    pi = pigpio.pi()
+
+    if not pi.connected:
       exit(0)
 
-   s = BME280.sensor(pi)
+    s = BME280.sensor(pi)
 
-   stop = time.time() + 60
-   if stateSun == True:
-    while stop > time.time():
-       t, p, h = s.read_data()
-       getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
-       print("h={:.2f} p={:.2f} t={:.2f} Alt={:.1f}".format(h, p/100.0, t, getAltitude)) #:.2f set decimal to 2 places
-       time.sleep(0.9)
-   else:
-    s.cancel()
-    return
+    stop = time.time() + 60
+    while True:
+        if stateSun == True:
+        #while stop > time.time():
+            t, p, h = s.read_data()
+            getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
+            print("h={:.2f} p={:.2f} t={:.2f} Alt={:.1f}".format(h, p/100.0, t, getAltitude)) #:.2f set decimal to 2 places
+            time.sleep(1)
+        if stateSun == False:
+            s.cancel()
+            break
 
 class Motor(object):
     def __init__(self, pins, mode=3):
@@ -486,84 +490,77 @@ class Motor(object):
 import SDL_Pi_SI1145
 sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
 
-def readSunLight():
-
-        vis = sensor.readVisible()
-        IR = sensor.readIR()
-        UV = sensor.readUV()
-        uvIndex = UV / 100.0
-        print('SunLight Sensor read at time: %s' % datetime.now())
-        print '		Vis:             ' + str(vis)
-        print '		IR:              ' + str(IR)
-        print '		UV Index:        ' + str(uvIndex)
-
-        #Warning
-        if uvIndex <= 3 :
-            print "Warning:" + "Wear Sun Glass; Low UV"
-        elif uvIndex > 3 and uvIndex <= 6 :
-            print "Warning:" + "Take cover when avalible; Moderate UV"
-        elif uvIndex > 6 and uvIndex >= 8 :
-            print "Warning:" + "Apply SPF 30+ sunscreen, don't stay out more than 3 hours; High UV"
-        elif uvIndex > 8 and uvIndex >= 11 :
-            print "Warning:" + "Do not stay in the sun for too long; Very High UV"
-        else :
-            print "Warning:" + "Take all Percautions; Extreme UV"
-
-        #uvIrradiance
-        #uvIrradiance = uvIndex * 0.025
-        #print "Uv Irradiance: " + uvIrradiance
-
-	returnValue = []
-	returnValue.append(vis)
-	returnValue.append(IR)
-	returnValue.append(uvIndex)
-	return returnValue
-
 def sunTracking():
-    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse
+    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun
     GPIO.setmode(GPIO.BCM)
     m = Motor([6,13,19,26])
     m.rpm = 10
     print "Pause in seconds: " + `m._T`
     #stepper
-    for numOfTurn in range(24):
-        degreeOfTurn = numOfTurn*15
+    for numOfTurn in range(19):
+        degreeOfTurn = numOfTurn*20
         m.move_to(degreeOfTurn)
         for x in range(21):
-            if x <= 1:
-                pulse = (x * 100)+500
-                pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.3)
-                vis = sensor.readVisible()
-                IR = sensor.readIR()
-                UV = sensor.readUV()
-                uvIndex = UV / 100.0
-                if highVisible < uvIndex:
-                    servoPos = x
-                    stepPos = degreeOfTurn
-                    highVisible = uvIndex
-                    pass
-                #print('SunLight Sensor read at time: %s' % datetime.now())
-                #print '		Vis:             ' + str(vis)
-                #print '		IR:              ' + str(IR)
-                #print '		UV Index:        ' + str(uvIndex)
+            if x == 0:
+                servoDelay = 0.3
+            elif x == 1:
+                servoDelay = 0.07
             else:
-                pulse = (x * 100)+500   #turn  servo 100 pulse from 500-2500
-                pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.015)
-                vis = sensor.readVisible()
-                IR = sensor.readIR()
-                UV = sensor.readUV()
-                uvIndex = UV / 100.0
-                if highVisible < uvIndex:
-                    servoPos = x
-                    stepPos = degreeOfTurn
-                    highVisible = uvIndex
-                    pass
-                #print('SunLight Sensor read at time: %s' % datetime.now())
-                #print '		Vis:             ' + str(vis)
-                #print '		IR:              ' + str(IR)
-                #print '		UV Index:        ' + str(uvIndex)
+                servoDelay = 0
+            pulse = (x * 100)+500
+            pi.set_servo_pulsewidth(gpioServo, pulse)
+            time.sleep(servoDelay)
+            vis = sensor.readVisible()
+            IR = sensor.readIR()
+            UV = sensor.readUV()
+
+            uvIndex = UV / 100.0
+
+            #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
+            ctime = str(time.ctime(time.time()))
+            uvLog = str(uvIndex)
+            altitudeLog = str(getAltitude)
+            pulseLog = str(pulse)
+            stepperPosCurrent = 0
+            stepperPosCurrent += degreeOfTurn
+            stepperLog = str(stepperPosCurrent)
+            '''
+            t = str(t)
+            p = str(p)
+            h = str(h)
+            '''
+            print(stepperPosCurrent)
+
+            file.write("\n")
+            file.write(ctime)
+            file.write(" , ")
+            file.write(altitudeLog)
+            file.write(" , ")
+            file.write(uvLog)
+            file.write(" , ")
+            file.write(pulseLog)
+            file.write(" , ")
+            file.write(stepperLog)
+            file.write(" , ")
+            '''
+            file.write(t)
+            file.write(" , ")
+            file.write(p)
+            file.write(" , ")
+            file.write(h)
+            file.write(" , ")
+            '''
+
+            if highVisible < uvIndex:
+                servoPos = x
+                stepPos = degreeOfTurn
+                highVisible = uvIndex
+                pass
+            #print('SunLight Sensor read at time: %s' % datetime.now())
+            #print '		Vis:             ' + str(vis)
+            #print '		IR:              ' + str(IR)
+            #print '		UV Index:        ' + str(uvIndex)
+
     servoPos = (servoPos * 100)+500
     pi.set_servo_pulsewidth(gpioServo, servoPos)
     print(servoPos)
@@ -571,7 +568,7 @@ def sunTracking():
     time.sleep(1)
     pi.set_servo_pulsewidth(gpioServo, 0)
     #calculating effect on human
-    uvIrradiance = highVisible * 0.025 * 60 * 10
+    uvIrradiance = highVisible * 0.025 * 60 / 10
     print "Uv Irradiance: " + str(uvIrradiance)
     if uvIrradiance > 2.67 :
         print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
@@ -580,21 +577,37 @@ def sunTracking():
     elif uvIrradiance <= 1.33 and uvIrradiance > 0.89 :
         print "Your skin will start to burn and tanning within half an hour"
     elif uvIrradiance <= 0.89 and uvIrradiance > 0.67 :
-        print "Your skin will start to burn and tanning within 45 minutes"
-    else :
         print "Your skin will start to burn and tanning within an hour"
+    else :
+        print "Your skin will start to burn and tanning more than an hour"
     #print("Ps. This case is for Mediterranean, Asian and Latino people only")
     stateSun = False
-    return stateSun
 
 if __name__ == '__main__':
+    ctime = str(time.ctime(time.time()))
+    uvWrite = str(highVisible)
+    file = open("sunlightdata.txt" ,"w")
+    file.write("Log Data")
+    file.write("  Time  , Alt  ,  UV  , Steppper , Servo(Pulse) , Temp , Pressure , Humidity\n")
+    file.write("_________________________________________________ \n")
     jobs = []
-    sun = multiprocessing.Process(target=sunTracking)
-    baro = multiprocessing.Process(target=barometer)
+    sun = Thread(target=sunTracking)
+    baro = Thread(target=barometer)
     jobs.append(sun)
     jobs.append(baro)
     sun.start()
     baro.start()
+    sun.join()
+    baro.join()
+
+    #highestUV record
+    file.write("_________________________________________________ \n")
+    file.write("Highest UV \n")
+    file.write(ctime)
+    file.write(" = ")
+    file.write(uvWrite)
+
+    file.close()
+
     pi.stop()
     GPIO.cleanup()
-
