@@ -1,48 +1,77 @@
-import time
+#Barometer
 import math
-from PigpioStepperMotor import StepperMotor, fullStepSequence
 
-#Grove Sunlight Sensor
-import sys
-import os
+#Multithreading
+from threading import Thread
+from threading import *
 
-sys.path.append('./SDL_Pi_SI1145');
+#Multiproccesing
+import multiprocessing
 
-import RPi.GPIO as GPIO
-
-from datetime import datetime
-
-from apscheduler.schedulers.background import BackgroundScheduler
-
-import SDL_Pi_SI1145
-
-sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
-# Variables StepperMotor
-pi = pigpio.pi()
-motor = StepperMotor(pi, 6, 13, 19, 26, sequence = fullStepSequence)
-
-# Variables BME280
-getAltitude = None
+# Variables
+getAltitude = 0
 sea_press = 1013.25
 
-# Interface BME280
+# Interface
 
 I2C=0
 SPI=1
 
 AUX_SPI=256
 
-# Sampling BME280
+# Barometer Sampling
 
 OVER_SAMPLE_1 = 1
 OVER_SAMPLE_2 = 2
 OVER_SAMPLE_4 = 3
 OVER_SAMPLE_8 = 4
 OVER_SAMPLE_16 = 5
+stateSun = True
 
-#BME280 Code
+t = None
+p = None
+h = None
+
+
+#StepperMotor
+import pigpio
+
+#servo
+pulse = None
+gpioServo = 4
+servoPos = None
+
+#Grove Sunlight Sensor
+highVisible = 0
+import sys
+import os
+pulse = None
+gpioServo = 4
+servoPos = None
+uvIrradiance = None
+stepPos = None
+
+sys.path.append('./SDL_Pi_SI1145');
+import time
+from time import sleep
+
+#servo
+pi = pigpio.pi()
+import RPi.GPIO as GPIO
+
+#set up GPIO using BCM numbering
+GPIO.setmode(GPIO.BCM)
+
+LED = 4
+
+GPIO.setup(LED, GPIO.OUT, initial=0)
+
+from datetime import datetime
+
 class sensor:
-   #A class to read the BME280 pressure, humidity, and temperature sensor._
+   """
+   A class to read the BME280 pressure, humidity, and temperature sensor._
+   """
 
    # BME280 Registers
 
@@ -97,61 +126,7 @@ class sensor:
    def __init__(self, pi, sampling=OVER_SAMPLE_1, interface=I2C,
                    bus=1, address=0x76,
                    channel=0, baud=10000000, flags=0):
-      """
-      Instantiate with the Pi.
 
-      Optionally the over sampling rate may be set (default 1).
-
-      Optionally the interface to be used may be specified as
-      I2C (default) or SPI.
-
-      For I2C the default bus is 1 and default address is 0x76.
-      The address will be 0x76 if SDO is pulled to ground and
-      0x77 if SDO is pulled to 3V3.  For I2C the CS pin (if
-      present) should be pulled to 3V3.
-
-      For SPI the default channel is 0, baud is 10Mbps, and flags
-      is 0 (main SPI, mode 0).
-
-      Example using I2C, bus 1, address 0x76
-
-      s = BME280.sensor(pi)
-
-
-      Example using main SPI, channel 0, baud 10Mbps
-
-      s = BME280.sensor(pi, interface=SPI)
-
-
-      Example using auxiliary SPI, channel 2, baud 50k
-
-      s = BME280.sensor(pi, sampling=OVER_SAMPLE_4,
-             interface=SPI, channel=2, flags=AUX_SPI, baud=50000)
-
-
-      GPIO       pin  pin    GPIO
-      3V3         1    2      5V
-      2 (SDA)     3    4      5V
-      3 (SCL)     5    6      0V
-      4           7    8      14 (TXD)
-      0V          9   10      15 (RXD)
-      17 (ce1)   11   12      18 (ce0)
-      27         13   14      0V
-      22         15   16      23
-      3V3        17   18      24
-      10 (MOSI)  19   20      0V
-      9 (MISO)   21   22      25
-      11 (SCLK)  23   24      8 (CE0)
-      0V         25   26      7 (CE1)
-                 .......
-      0 (ID_SD)  27   28      1 (ID_SC)
-      5          29   30      0V
-      6          31   32      12
-      13         33   34      0V
-      19 (miso)  35   36      16 (ce2)
-      26         37   38      20 (mosi)
-      0V         39   40      21 (sclk)
-      """
       self.pi = pi
 
       if interface == I2C:
@@ -353,29 +328,286 @@ class sensor:
 
          self.h = None
 
-#stop sensor
-if __name__ == "__main__":
+def barometer():
+    #global t, p, h, getAltitude
+    import time
+    import BME280
+    import pigpio
 
-   import time
-   import BME280
-   import pigpio
+    pi = pigpio.pi()
 
-   pi = pigpio.pi()
-
-   if not pi.connected:
+    if not pi.connected:
       exit(0)
 
-   s = BME280.sensor(pi)
+    s = BME280.sensor(pi)
 
-   stop = time.time() + 60
+    stop = time.time() + 60
+    while True:
+        if stateSun == True:
+        #while stop > time.time():
+            t, p, h = s.read_data()
+            getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
+            print("h={:.2f} p={:.2f} t={:.2f} Alt={:.1f}".format(h, p/100.0, t, getAltitude)) #:.2f set decimal to 2 places
+            time.sleep(1)
+        if stateSun == False:
+            s.cancel()
+            break
 
-   while stop > time.time():
-      t, p, h = s.read_data()
-      getAltitude = ((math.pow((sea_press / (p/100.0)), 1/5.257) - 1.0) * (t + 273.15)) / 0.0065; #Pressure to Altitude Equation
-      print(time.time())
-      print("h={:.2f} p={:.2f} t={:.2f} Alt={:.1f}".format(h, p/100.0, t, getAltitude)) #:.2f set decimal to 2 places
-      time.sleep(0.9)
+class Motor(object):
+    def __init__(self, pins, mode=3):
+        """Initialise the motor object.
 
-   s.cancel()
+        pins -- a list of 4 integers referring to the GPIO pins that the IN1, IN2
+                IN3 and IN4 pins of the ULN2003 board are wired to
+        mode -- the stepping mode to use:
+                1: wave drive (not yet implemented)
+                2: full step drive
+                3: half step drive (default)
 
-   pi.stop()
+        """
+        self.P1 = pins[0]
+        self.P2 = pins[1]
+        self.P3 = pins[2]
+        self.P4 = pins[3]
+        self.mode = mode
+        self.deg_per_step = 5.625 / 64  # for half-step drive (mode 3)
+        self.steps_per_rev = int(360 / self.deg_per_step)  # 4096
+        self.step_angle = 0  # Assume the way it is pointing is zero degrees
+        for p in pins:
+            GPIO.setup(p, GPIO.OUT)
+            GPIO.output(p, 0)
+
+    def _set_rpm(self, rpm):
+        """Set the turn speed in RPM."""
+        self._rpm = rpm
+        # T is the amount of time to stop between signals
+        self._T = (60.0 / rpm) / self.steps_per_rev
+
+    # This means you can set "rpm" as if it is an attribute and
+    # behind the scenes it sets the _T attribute
+    rpm = property(lambda self: self._rpm, _set_rpm)
+
+    def move_to(self, angle):
+        """Take the shortest route to a particular angle (degrees)."""
+        # Make sure there is a 1:1 mapping between angle and stepper angle
+        target_step_angle = 8 * (int(angle / self.deg_per_step) / 8)
+        steps = target_step_angle - self.step_angle
+        steps = (steps % self.steps_per_rev)
+        if steps > self.steps_per_rev / 2:
+            steps -= self.steps_per_rev
+            print "moving " + `steps` + " steps"
+            if self.mode == 2:
+                self._move_acw_2(-steps / 8)
+            else:
+                self._move_acw_3(-steps / 8)
+        else:
+            print "moving " + `steps` + " steps"
+            if self.mode == 2:
+                self._move_cw_2(steps / 8)
+            else:
+                self._move_cw_3(steps / 8)
+        self.step_angle = target_step_angle
+
+    def __clear(self):
+        GPIO.output(self.P1, 0)
+        GPIO.output(self.P2, 0)
+        GPIO.output(self.P3, 0)
+        GPIO.output(self.P4, 0)
+
+    def _move_acw_2(self, big_steps):
+        self.__clear()
+        for i in range(big_steps):
+            GPIO.output(self.P3, 0)
+            GPIO.output(self.P1, 1)
+            sleep(self._T * 2)
+            GPIO.output(self.P2, 0)
+            GPIO.output(self.P4, 1)
+            sleep(self._T * 2)
+            GPIO.output(self.P1, 0)
+            GPIO.output(self.P3, 1)
+            sleep(self._T * 2)
+            GPIO.output(self.P4, 0)
+            GPIO.output(self.P2, 1)
+            sleep(self._T * 2)
+
+    def _move_cw_2(self, big_steps):
+        self.__clear()
+        for i in range(big_steps):
+            GPIO.output(self.P4, 0)
+            GPIO.output(self.P2, 1)
+            sleep(self._T * 2)
+            GPIO.output(self.P1, 0)
+            GPIO.output(self.P3, 1)
+            sleep(self._T * 2)
+            GPIO.output(self.P2, 0)
+            GPIO.output(self.P4, 1)
+            sleep(self._T * 2)
+            GPIO.output(self.P3, 0)
+            GPIO.output(self.P1, 1)
+            sleep(self._T * 2)
+
+    def _move_acw_3(self, big_steps):
+        self.__clear()
+        for i in range(big_steps):
+            GPIO.output(self.P1, 0)
+            sleep(self._T)
+            GPIO.output(self.P3, 1)
+            sleep(self._T)
+            GPIO.output(self.P4, 0)
+            sleep(self._T)
+            GPIO.output(self.P2, 1)
+            sleep(self._T)
+            GPIO.output(self.P3, 0)
+            sleep(self._T)
+            GPIO.output(self.P1, 1)
+            sleep(self._T)
+            GPIO.output(self.P2, 0)
+            sleep(self._T)
+            GPIO.output(self.P4, 1)
+            sleep(self._T)
+
+    def _move_cw_3(self, big_steps):
+        self.__clear()
+        for i in range(big_steps):
+            GPIO.output(self.P3, 0)
+            sleep(self._T)
+            GPIO.output(self.P1, 1)
+            sleep(self._T)
+            GPIO.output(self.P4, 0)
+            sleep(self._T)
+            GPIO.output(self.P2, 1)
+            sleep(self._T)
+            GPIO.output(self.P1, 0)
+            sleep(self._T)
+            GPIO.output(self.P3, 1)
+            sleep(self._T)
+            GPIO.output(self.P2, 0)
+            sleep(self._T)
+            GPIO.output(self.P4, 1)
+            sleep(self._T)
+
+#SunLight
+import SDL_Pi_SI1145
+sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
+
+def sunTracking():
+    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun
+    GPIO.setmode(GPIO.BCM)
+    m = Motor([6,13,19,26])
+    m.rpm = 10
+    print "Pause in seconds: " + `m._T`
+    #stepper
+    for numOfTurn in range(19):
+        degreeOfTurn = numOfTurn*20
+        m.move_to(degreeOfTurn)
+        for x in range(21):
+            if x == 0:
+                servoDelay = 0.3
+            elif x == 1:
+                servoDelay = 0.07
+            else:
+                servoDelay = 0
+            pulse = (x * 100)+500
+            pi.set_servo_pulsewidth(gpioServo, pulse)
+            time.sleep(servoDelay)
+            vis = sensor.readVisible()
+            IR = sensor.readIR()
+            UV = sensor.readUV()
+
+            uvIndex = UV / 100.0
+
+            #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
+            ctime = str(time.ctime(time.time()))
+            uvLog = str(uvIndex)
+            altitudeLog = str(getAltitude)
+            pulseLog = str(pulse)
+            stepperPosCurrent = 0
+            stepperPosCurrent += degreeOfTurn
+            stepperLog = str(stepperPosCurrent)
+            '''
+            t = str(t)
+            p = str(p)
+            h = str(h)
+            '''
+            print(stepperPosCurrent)
+
+            file.write("\n")
+            file.write(ctime)
+            file.write(" , ")
+            file.write(altitudeLog)
+            file.write(" , ")
+            file.write(uvLog)
+            file.write(" , ")
+            file.write(pulseLog)
+            file.write(" , ")
+            file.write(stepperLog)
+            file.write(" , ")
+            '''
+            file.write(t)
+            file.write(" , ")
+            file.write(p)
+            file.write(" , ")
+            file.write(h)
+            file.write(" , ")
+            '''
+
+            if highVisible < uvIndex:
+                servoPos = x
+                stepPos = degreeOfTurn
+                highVisible = uvIndex
+                pass
+            #print('SunLight Sensor read at time: %s' % datetime.now())
+            #print '		Vis:             ' + str(vis)
+            #print '		IR:              ' + str(IR)
+            #print '		UV Index:        ' + str(uvIndex)
+
+    servoPos = (servoPos * 100)+500
+    pi.set_servo_pulsewidth(gpioServo, servoPos)
+    print(servoPos)
+    m.move_to(stepPos)
+    time.sleep(1)
+    pi.set_servo_pulsewidth(gpioServo, 0)
+    #calculating effect on human
+    uvIrradiance = highVisible * 0.025 * 60 / 10
+    print "Uv Irradiance: " + str(uvIrradiance)
+    if uvIrradiance > 2.67 :
+        print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
+    elif uvIrradiance <= 2.67 and uvIrradiance > 1.33 :
+        print "Your skin will start to burn and tanning within 15 minutes"
+    elif uvIrradiance <= 1.33 and uvIrradiance > 0.89 :
+        print "Your skin will start to burn and tanning within half an hour"
+    elif uvIrradiance <= 0.89 and uvIrradiance > 0.67 :
+        print "Your skin will start to burn and tanning within an hour"
+    else :
+        print "Your skin will start to burn and tanning more than an hour"
+    #print("Ps. This case is for Mediterranean, Asian and Latino people only")
+    stateSun = False
+
+if __name__ == '__main__':
+    ctime = str(time.ctime(time.time()))
+    uvWrite = str(highVisible)
+    file = open("sunlightdata.txt" ,"w")
+    file.write("Log Data")
+    file.write("  Time  , Alt  ,  UV  , Steppper , Servo(Pulse) , Temp , Pressure , Humidity\n")
+    file.write("_________________________________________________ \n")
+    jobs = []
+    sun = Thread(target=sunTracking)
+    baro = Thread(target=barometer)
+    jobs.append(sun)
+    jobs.append(baro)
+    sun.start()
+    baro.start()
+    sun.join()
+    baro.join()
+
+    #highestUV record
+    file.write("_________________________________________________ \n")
+    file.write("Highest UV \n")
+    file.write(ctime)
+    file.write(" = ")
+    file.write(uvWrite)
+
+    file.close()
+
+    pi.stop()
+    GPIO.cleanup()
