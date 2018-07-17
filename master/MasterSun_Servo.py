@@ -556,7 +556,7 @@ def sunTracking():
             elif x == 1:
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.1)
+                time.sleep(0.06)
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
                 UV = sensor.readUV()
