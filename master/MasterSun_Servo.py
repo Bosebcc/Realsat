@@ -496,7 +496,7 @@ def sunTracking():
     print "Pause in seconds: " + `m._T`
     #stepper
     for numOfTurn in range(24):
-        degreeOfTurn = numOfTurn*15
+        degreeOfTurn = numOfTurn*16
         m.move_to(degreeOfTurn)
         for x in range(21):
             if x <= 1:
