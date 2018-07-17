@@ -499,10 +499,64 @@ def sunTracking():
         degreeOfTurn = numOfTurn*15
         m.move_to(degreeOfTurn)
         for x in range(21):
-            if x <= 1:
+            if x == 0:
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
                 time.sleep(0.3)
+                vis = sensor.readVisible()
+                IR = sensor.readIR()
+                UV = sensor.readUV()
+
+                uvIndex = UV / 100.0
+
+                #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
+                ctime = str(time.ctime(time.time()))
+                uvLog = str(uvIndex)
+                altitudeLog = str(getAltitude)
+                pulseLog = str(pulse)
+                stepperPosCurrent = 0
+                stepperPosCurrent += degreeOfTurn
+                stepperLog = str(stepperPosCurrent)
+                '''
+                t = str(t)
+                p = str(p)
+                h = str(h)
+                '''
+                print(stepperPosCurrent)
+
+                file.write("\n")
+                file.write(ctime)
+                file.write(" , ")
+                file.write(altitudeLog)
+                file.write(" , ")
+                file.write(uvLog)
+                file.write(" , ")
+                file.write(pulseLog)
+                file.write(" , ")
+                file.write(stepperLog)
+                file.write(" , ")
+                '''
+                file.write(t)
+                file.write(" , ")
+                file.write(p)
+                file.write(" , ")
+                file.write(h)
+                file.write(" , ")
+                '''
+
+                if highVisible < uvIndex:
+                    servoPos = x
+                    stepPos = degreeOfTurn
+                    highVisible = uvIndex
+                    pass
+                #print('SunLight Sensor read at time: %s' % datetime.now())
+                #print '		Vis:             ' + str(vis)
+                #print '		IR:              ' + str(IR)
+                #print '		UV Index:        ' + str(uvIndex)
+            elif x == 1:
+                pulse = (x * 100)+500
+                pi.set_servo_pulsewidth(gpioServo, pulse)
+                time.sleep(0.1)
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
                 UV = sensor.readUV()
