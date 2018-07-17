@@ -522,6 +522,7 @@ def sunTracking():
                 p = str(p)
                 h = str(h)
                 '''
+                print(stepperPosCurrent)
 
                 file.write("\n")
                 file.write(ctime)
@@ -574,6 +575,7 @@ def sunTracking():
                 p = str(p)
                 h = str(h)
                 '''
+                print(stepperPosCurrent)
 
                 file.write("\n")
                 file.write(ctime)
