@@ -40,33 +40,33 @@ if __name__ == '__main__' :
     while True:
         # Aktivieren, um das Modul ansprechen zu koennen
         bus.write_byte_data(address, power_mgmt_1, 0)
-        print "Gyroskop"
+        print "Gyroscope"
         print "--------"
 
-        gyroskop_xout = read_word_2c(0x43)
-        gyroskop_yout = read_word_2c(0x45)
-        gyroskop_zout = read_word_2c(0x47)
+        Gyroscope_xout = read_word_2c(0x43)
+        Gyroscope_yout = read_word_2c(0x45)
+        Gyroscope_zout = read_word_2c(0x47)
 
-        print "gyroskop_xout: ", ("%5d" % gyroskop_xout), " skaliert: ", (gyroskop_xout / 131)
-        print "gyroskop_yout: ", ("%5d" % gyroskop_yout), " skaliert: ", (gyroskop_yout / 131)
-        print "gyroskop_zout: ", ("%5d" % gyroskop_zout), " skaliert: ", (gyroskop_zout / 131)
+        print "Gyroscope_xout: ", ("%5d" % Gyroscope_xout), " scaled: ", (Gyroscope_xout / 131)
+        print "Gyroscope_yout: ", ("%5d" % Gyroscope_yout), " scaled: ", (Gyroscope_yout / 131)
+        print "Gyroscope_zout: ", ("%5d" % Gyroscope_zout), " scaled: ", (Gyroscope_zout / 131)
 
         print
-        print "Beschleunigungssensor"
+        print "accelerationssensor"
         print "---------------------"
 
-        beschleunigung_xout = read_word_2c(0x3b)
-        beschleunigung_yout = read_word_2c(0x3d)
-        beschleunigung_zout = read_word_2c(0x3f)
+        acceleration_xout = read_word_2c(0x3b)
+        acceleration_yout = read_word_2c(0x3d)
+        acceleration_zout = read_word_2c(0x3f)
 
-        beschleunigung_xout_skaliert = beschleunigung_xout / 16384.0
-        beschleunigung_yout_skaliert = beschleunigung_yout / 16384.0
-        beschleunigung_zout_skaliert = beschleunigung_zout / 16384.0
+        acceleration_xout_scaled = acceleration_xout / 16384.0
+        acceleration_yout_scaled = acceleration_yout / 16384.0
+        acceleration_zout_scaled = acceleration_zout / 16384.0
 
-        print "beschleunigung_xout: ", ("%6d" % beschleunigung_xout), " skaliert: ", beschleunigung_xout_skaliert
-        print "beschleunigung_yout: ", ("%6d" % beschleunigung_yout), " skaliert: ", beschleunigung_yout_skaliert
-        print "beschleunigung_zout: ", ("%6d" % beschleunigung_zout), " skaliert: ", beschleunigung_zout_skaliert
+        print "acceleration_xout: ", ("%6d" % acceleration_xout), " scaled: ", acceleration_xout_scaled
+        print "acceleration_yout: ", ("%6d" % acceleration_yout), " scaled: ", acceleration_yout_scaled
+        print "acceleration_zout: ", ("%6d" % acceleration_zout), " scaled: ", acceleration_zout_scaled
 
-        print "X Rotation: " , get_x_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
-        print "Y Rotation: " , get_y_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
+        print "X Rotation: " , get_x_rotation(acceleration_xout_scaled, acceleration_yout_scaled, acceleration_zout_scaled)
+        print "Y Rotation: " , get_y_rotation(acceleration_xout_scaled, acceleration_yout_scaled, acceleration_zout_scaled)
         time.sleep(1)
