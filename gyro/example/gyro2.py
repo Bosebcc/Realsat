@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import smbus
 import math
+import time
 
 # Register
 power_mgmt_1 = 0x6b
@@ -68,3 +69,4 @@ if __name__ == '__main__' :
 
         print "X Rotation: " , get_x_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
         print "Y Rotation: " , get_y_rotation(beschleunigung_xout_skaliert, beschleunigung_yout_skaliert, beschleunigung_zout_skaliert)
+        time.sleep(1)
