@@ -50,7 +50,7 @@ for numOfTurn in range(19):
         else :
             print "Your skin will start to burn and tanning more than an hour"
         #print("Ps. This case is for Mediterranean, Asian and Latino people only")
-
+        servoTurnDirection == counterClockwise
     if servoTurnDirection == counterClockwise:
         for x in range(21):
             pulse = 2500-(x * 100)
@@ -100,4 +100,5 @@ for numOfTurn in range(19):
         else :
             print "Your skin will start to burn and tanning more than an hour"
         #print("Ps. This case is for Mediterranean, Asian and Latino people only")
+        servoTurnDirection == clockwise
     stateSun = False
