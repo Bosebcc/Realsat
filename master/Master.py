@@ -36,6 +36,11 @@ h = None
 #StepperMotor
 import pigpio
 
+#servo
+pulse = None
+gpioServo = 4
+servoPos = None
+
 #Grove Sunlight Sensor
 highVisible = 0
 import sys
@@ -51,12 +56,8 @@ import time
 from time import sleep
 
 #servo
-pulse = None
-gpioServo = 4
-servoPos = None
 pi = pigpio.pi()
 import RPi.GPIO as GPIO
-servoTurnDirection = True #True = clockwise; False = counterClockwise
 
 #set up GPIO using BCM numbering
 GPIO.setmode(GPIO.BCM)
@@ -266,9 +267,7 @@ class sensor:
    def read_data(self):
       """
       Returns the temperature, pressure, and humidity as a tuple.
-
       Each value is a float.
-
       The temperature is returned in degrees centigrade.  The
       pressure is returned in Pascals.  The humidity is returned
       as the relative humidity between 0 and 100%.
@@ -355,14 +354,12 @@ def barometer():
 class Motor(object):
     def __init__(self, pins, mode=3):
         """Initialise the motor object.
-
         pins -- a list of 4 integers referring to the GPIO pins that the IN1, IN2
                 IN3 and IN4 pins of the ULN2003 board are wired to
         mode -- the stepping mode to use:
                 1: wave drive (not yet implemented)
                 2: full step drive
                 3: half step drive (default)
-
         """
         self.P1 = pins[0]
         self.P2 = pins[1]
@@ -490,7 +487,7 @@ import SDL_Pi_SI1145
 sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
 
 def sunTracking():
-    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun, servoTurnDirection
+    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun
     GPIO.setmode(GPIO.BCM)
     m = Motor([6,13,19,26])
     m.rpm = 10
@@ -499,70 +496,88 @@ def sunTracking():
     for numOfTurn in range(19):
         degreeOfTurn = numOfTurn*20
         m.move_to(degreeOfTurn)
-        if servoTurnDirection == True:
-            for x in range(21):
-                pulse = (x * 100)+500
-                pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.01)
-                vis = sensor.readVisible()
-                IR = sensor.readIR()
-                UV = sensor.readUV()
+        for x in range(21):
+            if x == 0:
+                servoDelay = 0.3
+            elif x == 1:
+                servoDelay = 0.07
+            else:
+                servoDelay = 0
+            pulse = (x * 100)+500
+            pi.set_servo_pulsewidth(gpioServo, pulse)
+            time.sleep(servoDelay)
+            vis = sensor.readVisible()
+            IR = sensor.readIR()
+            UV = sensor.readUV()
 
-                uvIndex = UV / 100.0
+            uvIndex = UV / 100.0
 
-                #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
-                ctime = str(time.ctime(time.time()))
-                uvLog = str(uvIndex)
-                altitudeLog = str(getAltitude)
-                pulseLog = str(pulse)
-                stepperPosCurrent = 0
-                stepperPosCurrent += degreeOfTurn
-                stepperLog = str(stepperPosCurrent)
+            #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
+            ctime = str(time.ctime(time.time()))
+            uvLog = str(uvIndex)
+            altitudeLog = str(getAltitude)
+            pulseLog = str(pulse)
+            stepperPosCurrent = 0
+            stepperPosCurrent += degreeOfTurn
+            stepperLog = str(stepperPosCurrent)
+            '''
+            t = str(t)
+            p = str(p)
+            h = str(h)
+            '''
+            print(stepperPosCurrent)
 
-                if highVisible < uvIndex:
-                    servoPos = x
-                    stepPos = degreeOfTurn
-                    highVisible = uvIndex
-                    pass
-            servoPos = (servoPos * 100)+500
-            servoTurnDirection == False
-        else:
-            for x in range(21):
-                pulse = 2500-(x * 100)
-                pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.01)
-                vis = sensor.readVisible()
-                IR = sensor.readIR()
-                UV = sensor.readUV()
+            file.write("\n")
+            file.write(ctime)
+            file.write(" , ")
+            file.write(altitudeLog)
+            file.write(" , ")
+            file.write(uvLog)
+            file.write(" , ")
+            file.write(pulseLog)
+            file.write(" , ")
+            file.write(stepperLog)
+            file.write(" , ")
+            '''
+            file.write(t)
+            file.write(" , ")
+            file.write(p)
+            file.write(" , ")
+            file.write(h)
+            file.write(" , ")
+            '''
 
-                uvIndex = UV / 100.0
+            if highVisible < uvIndex:
+                servoPos = x
+                stepPos = degreeOfTurn
+                highVisible = uvIndex
+                pass
+            #print('SunLight Sensor read at time: %s' % datetime.now())
+            #print '		Vis:             ' + str(vis)
+            #print '		IR:              ' + str(IR)
+            #print '		UV Index:        ' + str(uvIndex)
 
-                #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
-                ctime = str(time.ctime(time.time()))
-                uvLog = str(uvIndex)
-                altitudeLog = str(getAltitude)
-                pulseLog = str(pulse)
-                stepperPosCurrent = 0
-                stepperPosCurrent += degreeOfTurn
-                stepperLog = str(stepperPosCurrent)
-
-                if highVisible < uvIndex:
-                    servoPos = x
-                    stepPos = degreeOfTurn
-                    highVisible = uvIndex
-                    pass
-                #print('SunLight Sensor read at time: %s' % datetime.now())
-                #print '		Vis:             ' + str(vis)
-                #print '		IR:              ' + str(IR)
-                #print '		UV Index:        ' + str(uvIndex)
-            servoPos = 2500-(servoPos*100)
-            servoTurnDirection == True
-        pi.set_servo_pulsewidth(gpioServo, servoPos)
-        print(servoPos)
-        m.move_to(stepPos)
-        time.sleep(1)
-        pi.set_servo_pulsewidth(gpioServo, 0)
-        stateSun = False
+    servoPos = (servoPos * 100)+500
+    pi.set_servo_pulsewidth(gpioServo, servoPos)
+    print(servoPos)
+    m.move_to(stepPos)
+    time.sleep(1)
+    pi.set_servo_pulsewidth(gpioServo, 0)
+    #calculating effect on human
+    uvIrradiance = highVisible * 0.025 * 60 / 10
+    print "Uv Irradiance: " + str(uvIrradiance)
+    if uvIrradiance > 2.67 :
+        print "Your skin will start to burn and tanning under 15 minutes, please find a place to hide from uv now"
+    elif uvIrradiance <= 2.67 and uvIrradiance > 1.33 :
+        print "Your skin will start to burn and tanning within 15 minutes"
+    elif uvIrradiance <= 1.33 and uvIrradiance > 0.89 :
+        print "Your skin will start to burn and tanning within half an hour"
+    elif uvIrradiance <= 0.89 and uvIrradiance > 0.67 :
+        print "Your skin will start to burn and tanning within an hour"
+    else :
+        print "Your skin will start to burn and tanning more than an hour"
+    #print("Ps. This case is for Mediterranean, Asian and Latino people only")
+    stateSun = False
 
 if __name__ == '__main__':
     ctime = str(time.ctime(time.time()))
@@ -581,7 +596,6 @@ if __name__ == '__main__':
     sun.join()
     baro.join()
 
-    '''
     #highestUV record
     file.write("_________________________________________________ \n")
     file.write("Highest UV \n")
@@ -590,7 +604,6 @@ if __name__ == '__main__':
     file.write(uvWrite)
 
     file.close()
-    '''
 
     pi.stop()
     GPIO.cleanup()
