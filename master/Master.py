@@ -492,6 +492,7 @@ sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
 
 def sunTracking():
     global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun
+    servoTurnDirection = clockwise
     GPIO.setmode(GPIO.BCM)
     m = Motor([6,13,19,26])
     m.rpm = 10
