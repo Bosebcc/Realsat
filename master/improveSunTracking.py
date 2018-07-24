@@ -525,8 +525,8 @@ def sunTracking():
                     highVisible = uvIndex
                     pass
             servoPos = (servoPos * 100)+500
-            servoTurnDirection == False
-        else:
+            servoTurnDirection = False
+        if servoTurnDirection == False:
             for x in range(21):
                 pulse = 2500-(x * 100)
                 pi.set_servo_pulsewidth(gpioServo, pulse)
@@ -556,7 +556,7 @@ def sunTracking():
                 #print '		IR:              ' + str(IR)
                 #print '		UV Index:        ' + str(uvIndex)
             servoPos = 2500-(servoPos*100)
-            servoTurnDirection == True
+            servoTurnDirection = True
         pi.set_servo_pulsewidth(gpioServo, servoPos)
         print(servoPos)
         m.move_to(stepPos)
