@@ -499,64 +499,43 @@ def sunTracking():
     for numOfTurn in range(19):
         degreeOfTurn = numOfTurn*20
         m.move_to(degreeOfTurn)
-        if servoTurnDirection == True:
-            for x in range(21):
+        for x in range(21):
+            if servoTurnDirection == True:
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.01)
-                vis = sensor.readVisible()
-                IR = sensor.readIR()
-                UV = sensor.readUV()
-
-                uvIndex = UV / 100.0
-
-                #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
-                ctime = str(time.ctime(time.time()))
-                uvLog = str(uvIndex)
-                altitudeLog = str(getAltitude)
-                pulseLog = str(pulse)
-                stepperPosCurrent = 0
-                stepperPosCurrent += degreeOfTurn
-                stepperLog = str(stepperPosCurrent)
-
+                if x == 21:
+                    servoTurnDirection = False
                 if highVisible < uvIndex:
                     servoPos = x
+                    servoPos = (servoPos * 100)+500
                     stepPos = degreeOfTurn
                     highVisible = uvIndex
                     pass
-            servoPos = (servoPos * 100)+500
-            servoTurnDirection = False
-        if servoTurnDirection == False:
-            for x in range(21):
+            else:
                 pulse = 2500-(x * 100)
                 pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(0.01)
-                vis = sensor.readVisible()
-                IR = sensor.readIR()
-                UV = sensor.readUV()
-
-                uvIndex = UV / 100.0
-
-                #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
-                ctime = str(time.ctime(time.time()))
-                uvLog = str(uvIndex)
-                altitudeLog = str(getAltitude)
-                pulseLog = str(pulse)
-                stepperPosCurrent = 0
-                stepperPosCurrent += degreeOfTurn
-                stepperLog = str(stepperPosCurrent)
-
+                if x == 21:
+                    servoTurnDirection = True
                 if highVisible < uvIndex:
                     servoPos = x
+                    servoPos = 2500-(servoPos*100)
                     stepPos = degreeOfTurn
                     highVisible = uvIndex
                     pass
-                #print('SunLight Sensor read at time: %s' % datetime.now())
-                #print '		Vis:             ' + str(vis)
-                #print '		IR:              ' + str(IR)
-                #print '		UV Index:        ' + str(uvIndex)
-            servoPos = 2500-(servoPos*100)
-            servoTurnDirection = True
+            vis = sensor.readVisible()
+            IR = sensor.readIR()
+            UV = sensor.readUV()
+
+            uvIndex = UV / 100.0
+
+            #Log " Time  , Alt  ,  UV  , Steppper , Servo , Temp , Pressure , Humidity "
+            ctime = str(time.ctime(time.time()))
+            uvLog = str(uvIndex)
+            altitudeLog = str(getAltitude)
+            pulseLog = str(pulse)
+            stepperPosCurrent = 0
+            stepperPosCurrent += degreeOfTurn
+            stepperLog = str(stepperPosCurrent)
         pi.set_servo_pulsewidth(gpioServo, servoPos)
         print(servoPos)
         m.move_to(stepPos)
