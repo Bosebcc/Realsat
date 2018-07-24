@@ -36,11 +36,6 @@ h = None
 #StepperMotor
 import pigpio
 
-#servo
-pulse = None
-gpioServo = 4
-servoPos = None
-
 #Grove Sunlight Sensor
 highVisible = 0
 import sys
@@ -56,9 +51,12 @@ import time
 from time import sleep
 
 #servo
+pulse = None
+gpioServo = 4
+servoPos = None
 pi = pigpio.pi()
 import RPi.GPIO as GPIO
-servoTurnDirection = clockwise
+servoTurnDirection = True #True = clockwise; False = counterClockwise
 
 #set up GPIO using BCM numbering
 GPIO.setmode(GPIO.BCM)
@@ -501,7 +499,7 @@ def sunTracking():
     for numOfTurn in range(19):
         degreeOfTurn = numOfTurn*20
         m.move_to(degreeOfTurn)
-        if servoTurnDirection == clockwise:
+        if servoTurnDirection == True:
             for x in range(21):
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
@@ -550,8 +548,8 @@ def sunTracking():
             else :
                 print "Your skin will start to burn and tanning more than an hour"
             #print("Ps. This case is for Mediterranean, Asian and Latino people only")
-            servoTurnDirection == counterClockwise
-        if servoTurnDirection == counterClockwise:
+            servoTurnDirection == False
+        else:
             for x in range(21):
                 pulse = 2500-(x * 100)
                 pi.set_servo_pulsewidth(gpioServo, pulse)
@@ -600,7 +598,7 @@ def sunTracking():
             else :
                 print "Your skin will start to burn and tanning more than an hour"
             #print("Ps. This case is for Mediterranean, Asian and Latino people only")
-            servoTurnDirection == clockwise
+            servoTurnDirection == True
         stateSun = False
 
 if __name__ == '__main__':
