@@ -548,6 +548,8 @@ def sunTracking():
                 print "Your skin will start to burn and tanning more than an hour"
             #print("Ps. This case is for Mediterranean, Asian and Latino people only")
             servoTurnDirection == False
+            if servoTurnDirection == False:
+                break
         else:
             for x in range(21):
                 pulse = 2500-(x * 100)
@@ -597,6 +599,8 @@ def sunTracking():
                 print "Your skin will start to burn and tanning more than an hour"
             #print("Ps. This case is for Mediterranean, Asian and Latino people only")
             servoTurnDirection == True
+            if servoTurnDirection == True:
+                break
         stateSun = False
 
 if __name__ == '__main__':
