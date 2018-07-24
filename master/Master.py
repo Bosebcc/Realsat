@@ -503,7 +503,6 @@ def sunTracking():
             for x in range(21):
                 pulse = (x * 100)+500
                 pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(servoDelay)
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
                 UV = sensor.readUV()
@@ -553,7 +552,6 @@ def sunTracking():
             for x in range(21):
                 pulse = 2500-(x * 100)
                 pi.set_servo_pulsewidth(gpioServo, pulse)
-                time.sleep(servoDelay)
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
                 UV = sensor.readUV()
