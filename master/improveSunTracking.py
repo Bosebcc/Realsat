@@ -510,6 +510,7 @@ def sunTracking():
                 uvIndex = UV / 100.0
                 if x == 21:
                     servoTurnDirection = False
+                    time.sleep(0.3)
                 if highVisible < uvIndex:
                     servoPos = x
                     servoPos = (servoPos * 100)+500
@@ -522,9 +523,10 @@ def sunTracking():
                 vis = sensor.readVisible()
                 IR = sensor.readIR()
                 UV = sensor.readUV()
-                uvIndex = UV / 100.0 
+                uvIndex = UV / 100.0
                 if x == 21:
                     servoTurnDirection = True
+                    time.sleep(0.3)
                 if highVisible < uvIndex:
                     servoPos = x
                     servoPos = 2500-(servoPos*100)
