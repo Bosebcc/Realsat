@@ -543,9 +543,6 @@ def sunTracking():
             stepperPosCurrent = 0
             stepperPosCurrent += degreeOfTurn
             stepperLog = str(stepperPosCurrent)
-        pi.set_servo_pulsewidth(gpioServo, servoPos)
-        print(servoPos)
-        m.move_to(stepPos)
         time.sleep(1)
         pi.set_servo_pulsewidth(gpioServo, 0)
         stateSun = False
