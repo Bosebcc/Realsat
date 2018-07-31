@@ -500,6 +500,7 @@ def sunTracking():
     for numOfTurn in range(16):
         degreeOfTurn = numOfTurn*24
         m.move_to(degreeOfTurn)
+        print(stepperPosCurrent)
         for x in range(21):
             if servoTurnDirection == True:
                 pulse = (x * 100)+500
