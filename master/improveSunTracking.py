@@ -56,7 +56,7 @@ gpioServo = 4
 servoPos = None
 pi = pigpio.pi()
 import RPi.GPIO as GPIO
-servoTurnDirection = True #True = clockwise; False = counterClockwise
+#servoTurnDirection = True #True = clockwise; False = counterClockwise
 
 #set up GPIO using BCM numbering
 GPIO.setmode(GPIO.BCM)
@@ -490,14 +490,15 @@ import SDL_Pi_SI1145
 sensor = SDL_Pi_SI1145.SDL_Pi_SI1145()
 
 def sunTracking():
-    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun, servoTurnDirection
+    global highVisible, stepPos, servoPos, uvIndex, vis, IR, UV, pulse, stateSun
+    servoTurnDirection = True
     GPIO.setmode(GPIO.BCM)
     m = Motor([6,13,19,26])
     m.rpm = 10
     print "Pause in seconds: " + `m._T`
     #stepper
-    for numOfTurn in range(19):
-        degreeOfTurn = numOfTurn*20
+    for numOfTurn in range(16):
+        degreeOfTurn = numOfTurn*24
         m.move_to(degreeOfTurn)
         for x in range(21):
             if servoTurnDirection == True:
