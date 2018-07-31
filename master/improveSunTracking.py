@@ -508,9 +508,34 @@ def sunTracking():
                 IR = sensor.readIR()
                 UV = sensor.readUV()
                 uvIndex = UV / 100.0
+                ctime = str(time.ctime(time.time()))
+                uvLog = str(uvIndex)
+                altitudeLog = str(getAltitude)
+                pulseLog = str(pulse)
+                stepperPosCurrent = 0
+                stepperPosCurrent += degreeOfTurn
+                stepperLog = str(stepperPosCurrent)
+                '''
+                t = str(t)
+                p = str(p)
+                h = str(h)
+                '''
+                print(stepperPosCurrent)
+
+                file.write("\n")
+                file.write(ctime)
+                file.write(" , ")
+                file.write(altitudeLog)
+                file.write(" , ")
+                file.write(uvLog)
+                file.write(" , ")
+                file.write(pulseLog)
+                file.write(" , ")
+                file.write(stepperLog)
+                file.write(" , ")
+                time.sleep(0.03)
                 if x == 21:
                     servoTurnDirection = False
-                    time.sleep(0.3)
                 if highVisible < uvIndex:
                     servoPos = x
                     servoPos = (servoPos * 100)+500
@@ -524,9 +549,34 @@ def sunTracking():
                 IR = sensor.readIR()
                 UV = sensor.readUV()
                 uvIndex = UV / 100.0
+                ctime = str(time.ctime(time.time()))
+                uvLog = str(uvIndex)
+                altitudeLog = str(getAltitude)
+                pulseLog = str(pulse)
+                stepperPosCurrent = 0
+                stepperPosCurrent += degreeOfTurn
+                stepperLog = str(stepperPosCurrent)
+                '''
+                t = str(t)
+                p = str(p)
+                h = str(h)
+                '''
+                print(stepperPosCurrent)
+
+                file.write("\n")
+                file.write(ctime)
+                file.write(" , ")
+                file.write(altitudeLog)
+                file.write(" , ")
+                file.write(uvLog)
+                file.write(" , ")
+                file.write(pulseLog)
+                file.write(" , ")
+                file.write(stepperLog)
+                file.write(" , ")
+                time.sleep(0.03)
                 if x == 21:
                     servoTurnDirection = True
-                    time.sleep(0.3)
                 if highVisible < uvIndex:
                     servoPos = x
                     servoPos = 2500-(servoPos*100)
