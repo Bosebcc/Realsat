@@ -517,7 +517,7 @@ def sunTracking():
                     stepPos = degreeOfTurn
                     highVisible = uvIndex
                     pass
-            else if servoTurnDirection == False:
+            elif servoTurnDirection == False:
                 pulse = 2500-(x * 100)
                 pi.set_servo_pulsewidth(gpioServo, pulse)
                 vis = sensor.readVisible()
