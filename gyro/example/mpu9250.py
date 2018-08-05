@@ -1,6 +1,7 @@
 from __future__ import print_function
 from __future__ import division
 
+'''
 try:
 	import smbus2 as smbus
 except ImportError:
@@ -10,6 +11,7 @@ except ImportError:
 
 from time import sleep
 import struct
+'''
 
 # Todo:
 # - replace all read* with the block read?
@@ -72,7 +74,7 @@ class mpu9250(object):
 				GYRO_CONFIG: AK8963_14BIT | AK8963_100HZ
 			}
 		"""
-		self.bus = smbus.SMBus(bus)
+		self.bus = smbus.SMBus(0x68)
 
 		# let's double check we have the correct device address
 		ret = self.read8(MPU9250_ADDRESS, WHO_AM_I)
