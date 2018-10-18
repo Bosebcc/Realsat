@@ -1,7 +1,19 @@
 class barometer:
-    def barometer():
-        import time
-        import lib.BME280
+    def barometer(self):
+	import sys
+	sys.path.insert(0,'lib/')
+	import time
+        import BME280
+	import pigpio
+ 	import math
+
+	getAltitude = None
+	sea_press = 1013.25
+
+	pi = pigpio.pi()
+
+	if not pi.connected:
+	   exit(0)
 
         s = BME280.sensor(pi)
 
